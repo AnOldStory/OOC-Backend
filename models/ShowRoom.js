@@ -1,5 +1,5 @@
 module.exports = function(sequelize, Datatypes) {
-  var Showroom = sequelize.define("Showroom", {
+  var ShowRoom = sequelize.define("ShowRoom", {
     id: {
       type: Datatypes.STRING,
       allowNull: false,
@@ -7,5 +7,5 @@ module.exports = function(sequelize, Datatypes) {
       primaryKey: true
     }
   });
-  return Showroom;
+  return ShowRoom;
 };
