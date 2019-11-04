@@ -1,32 +1,43 @@
 module.exports = function(sequelize, Datatypes) {
   var Customer = sequelize.define("Customer", {
-    id: {
-      type: Datatypes.STRING,
+    customerId: {
+      type: Datatypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
+    customerName: {
       type: Datatypes.STRING,
       allowNull: false,
-      primaryKey: true
+      primaryKey: false
     },
-    rank: {
+    customerRank: {
       type: Datatypes.STRING,
       allowNull: false
     },
-    birth: {
+    customerBirth: {
       type: Datatypes.STRING,
       allowNull: false
     },
-    phone: {
+    customerPhone: {
       type: Datatypes.INTEGER,
       allowNull: false
     },
-    email: {
-      type: Datatypes.INTEGER,
+    customerEmail: {
+      type: Datatypes.STRING,
       allowNull: false
     }
   });
+
+  Customer.associate = function (models){
+    Customer.hasMany(models.Ticket, {
+      foreignKey: {
+        name: 'customerId',
+        allowNull: false
+      },
+      as: 'customerIdTicket'
+    });
+  };
+
   return Customer;
 };

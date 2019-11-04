@@ -1,23 +1,32 @@
 module.exports = function(sequelize, Datatypes) {
   var Department = sequelize.define("Department", {
-    id: {
-      type: Datatypes.STRING,
+    depId: {
+      type: Datatypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
+    depName: {
       type: Datatypes.STRING,
       allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: false
     },
-    rank: {
-      type: Datatypes.STRING,
+    depRank: {
+      type: Datatypes.INTEGER,
       allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: false
     }
   });
+
+  Department.associate = function (models){
+    Department.hasMany(models.Worker, {
+      foreignKey: {
+        name: 'depId',
+        allowNull: false
+      },
+      as: 'depWorkerId'
+    })
+  };
+
   return Department;
 };

@@ -1,29 +1,57 @@
 module.exports = function(sequelize, Datatypes) {
   var Worker = sequelize.define("Worker", {
-    id: {
-      type: Datatypes.STRING,
+    empId: {
+      type: Datatypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
+    empName: {
       type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      allowNull: false
     },
-    salary: {
-      type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+    empSalary: {
+      type: Datatypes.BIGINT,
+      allowNull: false
     },
-    position: {
+    empPosition: {
       type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      allowNull: false
     }
   });
+
+  Worker.associate = function (models){
+    Worker.belongsTo(models.Cinema, {
+      foreignKey: {
+        name: 'cinemaId',
+        allowNull: false
+      },
+      as: 'cineWorkerId'
+    });
+    Worker.belongsTo(models.Department, {
+      foreignKey: {
+        name: 'depId',
+        allowNull: false
+      },
+      as: 'depWorkerId'
+    });
+    Worker.hasMany(models.WorkTable, {
+      foreignKey: {
+        name: 'empId',
+        allowNull: false
+      },
+      as: 'empWorkTId'
+    });
+    Worker.hasMany(models.WorkTable, {
+      foreignKey: {
+        name: 'depId',
+        allowNull: false
+      },
+      as: 'depIdEmpWorkT'
+    });
+  };
+
   return Worker;
 };
+
+

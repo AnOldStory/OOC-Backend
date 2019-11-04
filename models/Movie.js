@@ -1,28 +1,39 @@
 module.exports = function(sequelize, Datatypes) {
   var Movie = sequelize.define("Movie", {
-    id: {
-      type: Datatypes.STRING,
+    movieId: {
+      type: Datatypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    min_age: {
+    censorRating: {
       type: Datatypes.STRING,
       allowNull: false,
-      primaryKey: true
+      primaryKey: false
     },
-    name: {
+    movieName: {
       type: Datatypes.STRING,
       allowNull: false
     },
-    year: {
+    movieReleaseYear: {
       type: Datatypes.STRING,
       allowNull: false
     },
-    time: {
+    movieRunTime: {
       type: Datatypes.INTEGER,
       allowNull: false
     }
   });
+
+  Movie.associate = function(models){
+    Movie.hasMany(models.Schedule, {
+      foreignKey: {
+        name: 'movieId',
+        allowNull: false
+      },
+      as: 'movieIdSchedule'
+    });
+  }
+
   return Movie;
 };

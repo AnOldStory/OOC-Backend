@@ -1,25 +1,24 @@
 module.exports = function(sequelize, Datatypes) {
   var Event = sequelize.define("Event", {
-    id: {
-      type: Datatypes.STRING,
+    eventId: {
+      type: Datatypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
+    eventName: {
       type: Datatypes.INTEGER,
       allowNull: false
     },
-    discount_percent: {
-      type: Datatypes.STRING,
-      allowNull: false,
-      primaryKey: true
-    },
-    discount_const: {
+    eventDCByPercent: {
       type: Datatypes.STRING,
       allowNull: false
     },
-    discount_maximum: {
+    eventDCByCost: {
+      type: Datatypes.STRING,
+      allowNull: false
+    },
+    eventMaxDC: {
       type: Datatypes.INTEGER,
       allowNull: false
     },
@@ -28,5 +27,23 @@ module.exports = function(sequelize, Datatypes) {
       allowNull: false
     }
   });
+
+  Event.associate = function (models){
+    Event.hasMany(models.Ticket, {
+      foreignKey: {
+        name: 'eventId',
+        allowNull: false
+      },
+      as: 'eventIdTicket'
+    });
+    Event.hasMany(models.Sell, {
+      foreignKey: {
+        name: 'eventId',
+        allowNull: false
+      },as: 'eventIdSell'
+
+    });
+  };
+  
   return Event;
 };

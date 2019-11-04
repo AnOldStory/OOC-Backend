@@ -1,23 +1,49 @@
 module.exports = function(sequelize, Datatypes) {
   var WorkTable = sequelize.define("WorkTable", {
-    date: {
+    workTableDate: {
       type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      allowNull: false
     },
-    kind: {
+    workTableKind: {
       type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      allowNull: false
     },
-    isEnd: {
+    workTableFinished: {
       type: Datatypes.STRING,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      allowNull: false
     }
   });
+
+  WorkTable.associate = function (models){
+    WorkTable.belongsTo(models.Facility, {
+      foreignKey: {
+        name: 'cinemaId',
+        allowNull: false
+      },
+      as: 'cinemaIdFacWorkT'
+    });
+    WorkTable.belongsTo(models.Facility, {
+      foreignKey: {
+        name: 'facilityId',
+        allowNull: false
+      },
+      as: 'facIdWorkT'
+    });
+    WorkTable.belongsTo(models.Worker, {
+      foreignKey: {
+        name: 'empId',
+        allowNull: false
+      },
+      as: 'empWorkTId'
+    });
+    WorkTable.belongsTo(models.Worker, {
+      foreignKey: {
+        name: 'depId',
+        allowNull: false
+      },
+      as: 'depIdEmpWorkT'
+    });
+  };
+
   return WorkTable;
 };
