@@ -13,75 +13,79 @@ module.exports = function(sequelize, Datatypes) {
     screeningDate: {
       type: Datatypes.STRING,
       allowNull: false
+    },
+    screeningLeftSeats: {
+      type: Datatypes.INTEGER,
+      allowNull: false
     }
   });
 
   Schedule.associate = function(models) {
     Schedule.belongsTo(models.ShowRoom, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdRoomSche',
+      as: "cineIdRoomSche",
       allowNull: false
     });
     Schedule.belongsTo(models.ShowRoom, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdSche',
+      as: "roomIdSche",
       allowNull: false
     });
     Schedule.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'movieId',
+        name: "movieId",
         allowNull: false
       },
-      as: 'movieIdSchedule',
+      as: "movieIdSchedule",
       allowNull: false
     });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'screeningId',
+        name: "screeningId",
         allowNull: false
       },
-      as: 'screeningIdTicket',
+      as: "screeningIdTicket",
       allowNull: false
     });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'screeningTime',
+        name: "screeningTime",
         allowNull: false
       },
-      as: 'screeningTimeTicket',
+      as: "screeningTimeTicket",
       allowNull: false
     });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdScheTicket',
+      as: "cineIdScheTicket",
       allowNull: false
     });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdScheTicket',
+      as: "roomIdScheTicket",
       allowNull: false
     });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'movieId',
+        name: "movieId",
         allowNull: false
       },
-      as: 'movieIdScheTicket',
+      as: "movieIdScheTicket",
       allowNull: false
     });
-  }
+  };
 
   return Schedule;
 };

@@ -14,34 +14,34 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  WorkTable.associate = function (models){
+  WorkTable.associate = function(models) {
     WorkTable.belongsTo(models.Facility, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cinemaIdFacWorkT'
+      as: "cinemaIdFacWorkT"
     });
     WorkTable.belongsTo(models.Facility, {
       foreignKey: {
-        name: 'facilityId',
+        name: "facilityId",
         allowNull: false
       },
-      as: 'facIdWorkT'
+      as: "facIdWorkT"
     });
     WorkTable.belongsTo(models.Worker, {
       foreignKey: {
-        name: 'empId',
+        name: "empId",
         allowNull: false
       },
-      as: 'empWorkTId'
+      as: "empWorkTId"
     });
     WorkTable.belongsTo(models.Worker, {
       foreignKey: {
-        name: 'depId',
+        name: "depId",
         allowNull: false
       },
-      as: 'depIdEmpWorkT'
+      as: "depIdEmpWorkT"
     });
   };
 

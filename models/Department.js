@@ -18,14 +18,14 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Department.associate = function (models){
+  Department.associate = function(models) {
     Department.hasMany(models.Worker, {
       foreignKey: {
-        name: 'depId',
+        name: "depId",
         allowNull: false
       },
-      as: 'depWorkerId'
-    })
+      as: "depWorkerId"
+    });
   };
 
   return Department;

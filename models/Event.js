@@ -28,22 +28,22 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Event.associate = function (models){
+  Event.associate = function(models) {
     Event.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'eventId',
+        name: "eventId",
         allowNull: false
       },
-      as: 'eventIdTicket'
+      as: "eventIdTicket"
     });
     Event.hasMany(models.Sell, {
       foreignKey: {
-        name: 'eventId',
+        name: "eventId",
         allowNull: false
-      },as: 'eventIdSell'
-
+      },
+      as: "eventIdSell"
     });
   };
-  
+
   return Event;
 };

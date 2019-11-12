@@ -8,41 +8,41 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  ShowRoom.associate = function (models){
+  ShowRoom.associate = function(models) {
     ShowRoom.belongsTo(models.Cinema, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineRoomId'
+      as: "cineRoomId"
     });
     ShowRoom.hasMany(models.Schedule, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdRoomSche'
+      as: "cineIdRoomSche"
     });
     ShowRoom.hasMany(models.Seat, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdRoomSeat'
+      as: "cineIdRoomSeat"
     });
     ShowRoom.hasMany(models.Schedule, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdSche'
+      as: "roomIdSche"
     });
     ShowRoom.hasMany(models.Seat, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdSeat'
+      as: "roomIdSeat"
     });
   };
 

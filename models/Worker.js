@@ -20,38 +20,36 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Worker.associate = function (models){
+  Worker.associate = function(models) {
     Worker.belongsTo(models.Cinema, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineWorkerId'
+      as: "cineWorkerId"
     });
     Worker.belongsTo(models.Department, {
       foreignKey: {
-        name: 'depId',
+        name: "depId",
         allowNull: false
       },
-      as: 'depWorkerId'
+      as: "depWorkerId"
     });
     Worker.hasMany(models.WorkTable, {
       foreignKey: {
-        name: 'empId',
+        name: "empId",
         allowNull: false
       },
-      as: 'empWorkTId'
+      as: "empWorkTId"
     });
     Worker.hasMany(models.WorkTable, {
       foreignKey: {
-        name: 'depId',
+        name: "depId",
         allowNull: false
       },
-      as: 'depIdEmpWorkT'
+      as: "depIdEmpWorkT"
     });
   };
 
   return Worker;
 };
-
-

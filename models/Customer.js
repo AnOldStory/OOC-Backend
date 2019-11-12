@@ -29,13 +29,13 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Customer.associate = function (models){
+  Customer.associate = function(models) {
     Customer.hasMany(models.Ticket, {
       foreignKey: {
-        name: 'customerId',
+        name: "customerId",
         allowNull: false
       },
-      as: 'customerIdTicket'
+      as: "customerIdTicket"
     });
   };
 

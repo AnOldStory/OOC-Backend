@@ -16,34 +16,34 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Cinema.associate = function (models){
+  Cinema.associate = function(models) {
     Cinema.hasMany(models.ShowRoom, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineRoomId'
+      as: "cineRoomId"
     });
     Cinema.hasMany(models.Facility, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineFacId'
+      as: "cineFacId"
     });
     Cinema.hasMany(models.Goods, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineGoodsId'
+      as: "cineGoodsId"
     });
     Cinema.hasMany(models.Worker, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineWorkerId'
+      as: "cineWorkerId"
     });
   };
 

@@ -1,12 +1,12 @@
 var indexRouter = require("./index");
-var usersRouter = require("./users");
+//var usersRouter = require("./users");
 
 /* preprosessing  */
 
 /* router  */
 module.exports = function(app) {
   app.use("/", indexRouter);
-  app.use("/users", usersRouter);
+  //app.use("/users", usersRouter);
 
   // error handler
   app.use(function(err, req, res, next) {

@@ -14,71 +14,71 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Ticket.associate = function(models){
+  Ticket.associate = function(models) {
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'screeningId',
+        name: "screeningId",
         allowNull: false
       },
-      as: 'screeningIdTicket'
+      as: "screeningIdTicket"
     });
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'screeningTime',
+        name: "screeningTime",
         allowNull: false
       },
-      as: 'screeningTimeTicket'
+      as: "screeningTimeTicket"
     });
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdScheTicket'
+      as: "cineIdScheTicket"
     });
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdScheTicket'
+      as: "roomIdScheTicket"
     });
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
-        name: 'movieId',
+        name: "movieId",
         allowNull: false
       },
-      as: 'movieIdScheTicket'
+      as: "movieIdScheTicket"
     });
     Ticket.belongsTo(models.Seat, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdSeatTicket'
+      as: "cineIdSeatTicket"
     });
     Ticket.belongsTo(models.Seat, {
       foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdSeatTicket'
+      as: "roomIdSeatTicket"
     });
     Ticket.belongsTo(models.Event, {
       foreignKey: {
-        name: 'eventId',
+        name: "eventId",
         allowNull: false
       },
-      as: 'eventIdTicket'
+      as: "eventIdTicket"
     });
     Ticket.belongsTo(models.Customer, {
       foreignKey: {
-        name: 'customerId',
+        name: "customerId",
         allowNull: false
       },
-      as: 'customerIdTicket'
+      as: "customerIdTicket"
     });
-  }
+  };
 
   return Ticket;
 };

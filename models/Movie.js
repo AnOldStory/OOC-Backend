@@ -25,15 +25,15 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Movie.associate = function(models){
+  Movie.associate = function(models) {
     Movie.hasMany(models.Schedule, {
       foreignKey: {
-        name: 'movieId',
+        name: "movieId",
         allowNull: false
       },
-      as: 'movieIdSchedule'
+      as: "movieIdSchedule"
     });
-  }
+  };
 
   return Movie;
 };

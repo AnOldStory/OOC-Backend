@@ -10,37 +10,39 @@ module.exports = function(sequelize, Datatypes) {
   Seat.associate = function(models) {
     Seat.belongsTo(models.ShowRoom, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdRoomSeat',
+      as: "cineIdRoomSeat",
       allowNull: false
     });
     Seat.belongsTo(models.ShowRoom, {
       foreignKey: {
-        name: 'showRoomId',
-        allowNull: false
-      },as: 'roomIdSeat',
-
-      allowNull: false
-    });
-    Seat.hasMany(models.Ticket, {
-      foreignKey: {
-        name: 'cinemaId',
-        allowNull: false
-      },as: 'cineIdSeatTicket',
-
-      allowNull: false
-    });
-    Seat.hasMany(models.Ticket, {
-      foreignKey: {
-        name: 'showRoomId',
+        name: "showRoomId",
         allowNull: false
       },
-      as: 'roomIdSeatTicket',
+      as: "roomIdSeat",
+
       allowNull: false
     });
-  }
+    Seat.hasMany(models.Ticket, {
+      foreignKey: {
+        name: "cinemaId",
+        allowNull: false
+      },
+      as: "cineIdSeatTicket",
+
+      allowNull: false
+    });
+    Seat.hasMany(models.Ticket, {
+      foreignKey: {
+        name: "showRoomId",
+        allowNull: false
+      },
+      as: "roomIdSeatTicket",
+      allowNull: false
+    });
+  };
 
   return Seat;
 };

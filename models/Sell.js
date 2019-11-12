@@ -19,27 +19,27 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
-  Sell.associate = function (models){
+  Sell.associate = function(models) {
     Sell.belongsTo(models.Goods, {
       foreignKey: {
-        name: 'cinemaId',
+        name: "cinemaId",
         allowNull: false
       },
-      as: 'cineIdGoodsSell'
+      as: "cineIdGoodsSell"
     });
     Sell.belongsTo(models.Goods, {
       foreignKey: {
-        name: 'goodsName',
+        name: "goodsName",
         allowNull: false
-      }
-      ,as: 'goodsNameSell'
+      },
+      as: "goodsNameSell"
     });
     Sell.belongsTo(models.Event, {
       foreignKey: {
-        name: 'eventId',
+        name: "eventId",
         allowNull: false
       },
-      as: 'eventIdSell'
+      as: "eventIdSell"
     });
   };
 
