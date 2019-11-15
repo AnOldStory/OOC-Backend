@@ -4,7 +4,7 @@ var jwt = require("jsonwebtoken");
 
 exports.encryption = (value, callback) => {
   jwt.sign(
-    { foo: value },
+    value,
     config.SESSION_SECRET,
     { expiresIn: 60 * 60 },
     (err, token) => {

@@ -195,7 +195,7 @@ router.get("/book/tickets", (req, res, next) => {
 
 router.get("/token/enc", (req, res, next) => {
   if (req.query.value) {
-    jwt.encryption(req.query.value, (err, token) => {
+    jwt.encryption({ foo: req.query.value }, (err, token) => {
       if (err) {
         console.log(err);
         next();
