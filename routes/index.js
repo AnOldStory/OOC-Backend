@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
+/* Json Web Token */
+var jwt = require("../utils/jwt");
+
 /* DB */
 var db = require("./database");
 
@@ -30,7 +33,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/book", (req, res, next) => {
-  if(Object.keys(req.query).length===0){
+  if (Object.keys(req.query).length === 0) {
     db.getSchedules((err, result) => {
       if (err) {
         next();
@@ -40,9 +43,8 @@ router.get("/book", (req, res, next) => {
         return;
       }
     });
-  }
-  else if(Object.keys(req.query).length===1){
-    if(req.query.movie){
+  } else if (Object.keys(req.query).length === 1) {
+    if (req.query.movie) {
       db.getSchedulesbyMovie(req.query.movie, (err, result) => {
         if (err) {
           console.log(err);
@@ -53,7 +55,7 @@ router.get("/book", (req, res, next) => {
           return;
         }
       });
-    } else if (req.query.cinema){
+    } else if (req.query.cinema) {
       db.getSchedulesbyCinema(req.query.cinema, (err, result) => {
         if (err) {
           console.log(err);
@@ -76,65 +78,129 @@ router.get("/book", (req, res, next) => {
         }
       });
     }
-  }
-  else if (Object.keys(req.query).length===2) {
-    if(req.query.movie && req.query.cinema){
-      db.getSchedulesbyCinemaMovie(req.query.cinema, req.query.movie, (err, result) => {
-        if (err) {
-          console.log(err);
-          next();
-        } else {
-          console.log("hello\n===========================");
-          res.json(result);
-          return;
+  } else if (Object.keys(req.query).length === 2) {
+    if (req.query.movie && req.query.cinema) {
+      db.getSchedulesbyCinemaMovie(
+        req.query.cinema,
+        req.query.movie,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            next();
+          } else {
+            console.log("hello\n===========================");
+            res.json(result);
+            return;
+          }
         }
-      });
-    } else if(req.query.cinema && req.query.date){
-      db.getSchedulesbyCinemaDate(req.query.cinema, req.query.date, (err, result) => {
-        if (err) {
-          console.log(err);
-          next();
-        } else {
-          console.log("hello\n===========================");
-          res.json(result);
-          return;
+      );
+    } else if (req.query.cinema && req.query.date) {
+      db.getSchedulesbyCinemaDate(
+        req.query.cinema,
+        req.query.date,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            next();
+          } else {
+            console.log("hello\n===========================");
+            res.json(result);
+            return;
+          }
         }
-      });
-    } else if(req.query.movie && req.query.date){
-      db.getSchedulesbyMovieDate(req.query.movie, req.query.date, (err, result) => {
-        if (err) {
-          console.log(err);
-          next();
-        } else {
-          console.log("hello\n===========================");
-          res.json(result);
-          return;
+      );
+    } else if (req.query.movie && req.query.date) {
+      db.getSchedulesbyMovieDate(
+        req.query.movie,
+        req.query.date,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            next();
+          } else {
+            console.log("hello\n===========================");
+            res.json(result);
+            return;
+          }
         }
-      });
+      );
     }
   } else {
-    db.getSchedulesbyCinemaMovieDate(req.query.cinema, req.query.movie, req.query.date, (err, result) => {
+    db.getSchedulesbyCinemaMovieDate(
+      req.query.cinema,
+      req.query.movie,
+      req.query.date,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          next();
+        } else {
+          console.log("hello\n===========================");
+          res.json(result);
+          return;
+        }
+      }
+    );
+  }
+});
+
+router.get("/book/tickets", (req, res, next) => {
+  if (req.query.cinema && req.query.movie && req.query.date && req.query.time) {
+    db.getTicketsTaken(
+      req.query.cinema,
+      req.query.movie,
+      req.query.date,
+      req.query.time,
+      (err, result) => {
+        if (err) {
+          next();
+        } else {
+          console.log("hello");
+          res.json(result);
+        }
+      }
+    );
+  } else {
+    next();
+  }
+});
+
+router.get("/book/tickets", (req, res, next) => {
+  if (
+    req.query.cinema &&
+    req.query.movie &&
+    req.query.date &&
+    req.query.time &&
+    req.query.seatNo
+  ) {
+    db.confirmTickets(
+      req.query.cinema,
+      req.query.movie,
+      req.query.date,
+      req.query.time,
+      req.query.seatNo,
+      (err, result) => {
+        if (err) {
+          next();
+        } else {
+          console.log("hello");
+          res.json(result);
+        }
+      }
+    );
+  } else {
+    next();
+  }
+});
+
+router.get("/token/enc", (req, res, next) => {
+  if (req.query.value) {
+    jwt.encryption(req.query.value, (err, token) => {
       if (err) {
         console.log(err);
         next();
       } else {
-        console.log("hello\n===========================");
-        res.json(result);
-        return;
-      }
-    });
-  }
-});
-
-get("/book/tickets", (req, res, next) => {
-  if (req.query.cinema && req.query.movie && req.query.date && req.query.time) {
-    db.getTicketsTaken(req.query.cinema, req.query.movie,
-                        req.query.date, req.query.time, (err, result) => {
-      if (err) {
-        next();
-      } else {
-        console.log("hello");
-        res.json(result);
+        res.json(token);
       }
     });
   } else {
@@ -142,20 +208,15 @@ get("/book/tickets", (req, res, next) => {
   }
 });
 
-get("/book/tickets", (req, res, next) => {
-  if (req.query.cinema && req.query.movie && req.query.date && req.query.time && req.query.seatNo) {
-    db.confirmTickets(req.query.cinema, req.query.movie,
-                        req.query.date, req.query.time, req.query.seatNo, (err, result) => {
-      if (err) {
-        next();
-      } else {
-        console.log("hello");
-        res.json(result);
-      }
-    });
-  } else {
-    next();
-  }
+router.get("/token/dec", (req, res, next) => {
+  jwt.decryption(req.query.token, (err, value) => {
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      res.json(value);
+    }
+  });
 });
 
 module.exports = router;

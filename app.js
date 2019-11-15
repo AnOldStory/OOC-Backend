@@ -6,12 +6,10 @@ var logger = require("morgan");
 
 var compression = require("compression");
 var helmet = require("helmet");
-var passport = require("passport");
 var cors = require("cors");
 
 /* Config */
 var config = require("./config/config");
-var passportConfig = require("./utils/passport");
 var mainSequelize = require("./models/index");
 
 var app = express();
@@ -26,9 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
-app.use(passport.initialize());
-passportConfig();
 
 mainSequelize.sequelize
   .sync()
