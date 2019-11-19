@@ -1,5 +1,6 @@
 var indexRouter = require("./index");
 var bookRouter = require("./book");
+var loginRouter = require("./login");
 //var usersRouter = require("./users");
 
 /* preprosessing  */
@@ -8,6 +9,7 @@ var bookRouter = require("./book");
 module.exports = function(app) {
   app.use("/", indexRouter);
   app.use("/book", bookRouter);
+  app.use("/login", loginRouter);
   //app.use("/users", usersRouter);
 
   // error handler

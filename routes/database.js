@@ -218,3 +218,21 @@ exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
 //     return callback(err, false);
 //   });
 // }
+
+exports.getUserbyIdPW = (id, pw, callback) => {
+  Models.Customer.findAll({
+    subQuery: false,
+    where: {
+      [Op.and]: [{customerId: id}
+      // , {customerPW: pw}
+      ]
+    }
+  }).then(result => {
+    console.log("getting customers...");
+    return callback(null, result);
+  }).catch(err => {
+    console.log("error");
+    console.log(err);
+    return callback(err, false);
+  });
+}
