@@ -1,9 +1,13 @@
 module.exports = function(sequelize, Datatypes) {
   var Customer = sequelize.define("Customer", {
     customerId: {
-      type: Datatypes.BIGINT,
+      type: Datatypes.STRING,
       allowNull: false,
-      autoIncrement: true,
+      primaryKey: true
+    },
+    customerPW:{
+      type: Datatypes.STRING,
+      allowNull: false,
       primaryKey: true
     },
     customerName: {
