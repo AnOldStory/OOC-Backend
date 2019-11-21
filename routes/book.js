@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const db = require("./database");
 
 router.get("/", (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
@@ -9,7 +10,6 @@ router.get("/", (req, res, next) => {
       } else {
         console.log("hello\n======================================");
         res.json(result);
-        return;
       }
     });
   } else if (Object.keys(req.query).length === 1) {
@@ -21,7 +21,6 @@ router.get("/", (req, res, next) => {
         } else {
           console.log("hello\n===========================");
           res.json(result);
-          return;
         }
       });
     } else if (req.query.cinema) {
@@ -32,7 +31,6 @@ router.get("/", (req, res, next) => {
         } else {
           console.log("hello\n===========================");
           res.json(result);
-          return;
         }
       });
     } else {
@@ -43,7 +41,6 @@ router.get("/", (req, res, next) => {
         } else {
           console.log("hello\n===========================");
           res.json(result);
-          return;
         }
       });
     }
@@ -59,7 +56,6 @@ router.get("/", (req, res, next) => {
           } else {
             console.log("hello\n===========================");
             res.json(result);
-            return;
           }
         }
       );
@@ -74,7 +70,6 @@ router.get("/", (req, res, next) => {
           } else {
             console.log("hello\n===========================");
             res.json(result);
-            return;
           }
         }
       );
@@ -89,7 +84,6 @@ router.get("/", (req, res, next) => {
           } else {
             console.log("hello\n===========================");
             res.json(result);
-            return;
           }
         }
       );
@@ -106,7 +100,6 @@ router.get("/", (req, res, next) => {
         } else {
           console.log("hello\n===========================");
           res.json(result);
-          return;
         }
       }
     );

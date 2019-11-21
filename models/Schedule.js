@@ -37,7 +37,7 @@ module.exports = function(sequelize, Datatypes) {
       as: "roomIdSche",
       allowNull: false
     });
-    Schedule.belongsTo(models.Schedule, {
+    Schedule.belongsTo(models.Movie, {
       foreignKey: {
         name: "movieId",
         allowNull: false

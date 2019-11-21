@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const RSA = require('node-rsa');
 const fs = require('fs');
+const db = require("./database");
 const rsa = new RSA();
-var rsaPublic = fs.readFileSync("../public/rsa/public.pem");
-var rsaPrivate = fs.readFileSync('../public/rsa/private.pem');
+var rsaPublic = fs.readFileSync(__dirname + "/../public/rsa/public.pem");
+var rsaPrivate = fs.readFileSync(__dirname + "/../public/rsa/private.pem");
 rsa.importKey(rsaPrivate, 'private');
 const privatePem = rsa.exportKey('private');
 rsa.importKey(rsaPublic, 'public');
@@ -12,7 +13,7 @@ const publicPem = rsa.exportKey('public');
 
 router.get("/", (req, res, next) => {
     if(!req.query.idEnc || !req.query.pwEnc) {
-        res.json(publicPem);
+        res.send(publicPem);
         return;
     } else if (req.query.idEnc && req.query.passEnc) {
         var givenId = rsa.decrypt(req.query.idEnc, 'utf-8');
