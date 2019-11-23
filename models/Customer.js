@@ -33,6 +33,18 @@ module.exports = function(sequelize, Datatypes) {
     }
   });
 
+  // Customer.methods.generateHash = function(password) {
+  //   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  // };
+
+  Customer.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+  };
+
+  Customer.hook("beforeCreate", function(Customer) {
+    Customer.customerPW = bcrypt.hashSync(Customer.customerPW, bcrypt.genSaltSync(10), null);
+  });
+
   Customer.associate = function(models) {
     Customer.hasMany(models.Ticket, {
       foreignKey: {

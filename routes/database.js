@@ -190,7 +190,7 @@ exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
   Models.Ticket.findAll({
     subQuery: false,
     where: {
-      [Op.and]: [{cinemaId: cinema}, {movieId: movie}, {screeningDate: date}, {ticketTime: time}]
+      [Op.and]: [{cinemaId: cinema}, {movieId: movie}, {screeningDate: date}, {screeningTime: time}]
     }
   }).then(result => {
     console.log("getting tickets...");
@@ -200,24 +200,24 @@ exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
     console.log(err);
     return callback(err, false);
   });
-}
+};
 
-// exports.addToTickets = (cinema, movie, date, time, seatNo, callback) => {
-//   Models.Ticket.create({
-//     cinemaId: cinema,
-//     movieId: movie,
-//     screeningDate: date,
-//     ticketTime: time,
-//     seatNumber: seatNo
-//   }).then(result => {
-//     console.log("getting tickets...");
-//     return callback(null, result);
-//   }).catch(err => {
-//     console.log("error");
-//     console.log(err);
-//     return callback(err, false);
-//   });
-// }
+exports.confirmTickets = (cinema, movie, date, time, seat, callback) => {
+  Models.Ticket.create({
+    cinemaId: cinema,
+    movieId: movie,
+    screeningDate: date,
+    ticketTime: time,
+    seatNumber: seat
+  }).then(result => {
+    console.log("adding to tickets...");
+    return callback(null, result);
+  }).catch(err => {
+    console.log("error");
+    console.log(err);
+    return callback(err, false);
+  });
+};
 
 exports.getUserbyIdPW = (id, pw, callback) => {
   Models.Customer.findAll({

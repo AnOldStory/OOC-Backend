@@ -4,10 +4,10 @@ module.exports = function(sequelize, Datatypes) {
       type: Datatypes.INTEGER,
       allowNull: false
     },
-    ticketTime: {
-      type: Datatypes.STRING,
-      allowNull: false
-    },
+    // ticketTime: {
+    //   type: Datatypes.STRING,
+    //   allowNull: false
+    // },
     ticketPaymentType: {
       type: Datatypes.STRING,
       allowNull: false
@@ -63,6 +63,14 @@ module.exports = function(sequelize, Datatypes) {
         allowNull: false
       },
       as: "roomIdSeatTicket"
+    });
+    Ticket.belongsTo(models.Seat, {
+      foreignKey: {
+        name: "seatNumber",
+        allowNull: false
+      },
+      as: "seatNoTicket",
+      allowNull: false
     });
     Ticket.belongsTo(models.Event, {
       foreignKey: {

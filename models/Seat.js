@@ -42,6 +42,14 @@ module.exports = function(sequelize, Datatypes) {
       as: "roomIdSeatTicket",
       allowNull: false
     });
+    Seat.hasMany(models.Ticket, {
+      foreignKey: {
+        name: "seatNumber",
+        allowNull: false
+      },
+      as: "seatNoTicket",
+      allowNull: false
+    });
   };
 
   return Seat;
