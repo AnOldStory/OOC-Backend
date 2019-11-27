@@ -1,7 +1,7 @@
 var indexRouter = require("./index");
 var bookRouter = require("./book");
 var loginRouter = require("./login");
-const adminRouter = require("./admin")
+const adminRouter = require("./admin");
 //var usersRouter = require("./users");
 
 /* preprosessing  */
@@ -14,7 +14,6 @@ module.exports = function(app) {
   app.use("/admin", adminRouter);
   //app.use("/users", usersRouter);
 
-  
   // error handler
   app.use(function(err, req, res, next) {
     // set locals, only providing error in development

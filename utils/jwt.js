@@ -3,11 +3,11 @@ var config = require("../config/config");
 var jwt = require("jsonwebtoken");
 
 exports.encryption = (value, callback) => {
-  console.log("encryp in jwt.js")
+  console.log("encryp in jwt.js");
   jwt.sign(
     value,
     config.SESSION_SECRET,
-     { expiresIn: 60 * 60 },
+    { expiresIn: 60 * 60 },
     (err, token) => {
       if (err) {
         console.log(err);
@@ -26,6 +26,6 @@ exports.decryption = (token, callback) => {
       return callback(err, null);
     } else {
       return callback(null, value);
-    } 
+    }
   });
 };

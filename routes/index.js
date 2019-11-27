@@ -11,7 +11,6 @@ var jwt = require("../utils/jwt");
 router.get("/", (req, res, next) => {
   console.log("surprise10!");
   if (validation) {
-    
   } else {
     /* TODO : Parameter Error Handleing */
     console.log("surprise!");
