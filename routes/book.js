@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const db = require("./database");
+// const db = require("./database");
+const db = require("./database/bookDb");
 
 router.get("/", (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
@@ -107,6 +108,10 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/tickets", (req, res, next) => {
+  console.log(req.query.cinema);
+  console.log(req.query.movie);
+  console.log(req.query.date);
+  console.log(req.query.time);
   if (req.query.cinema && req.query.movie && req.query.date && req.query.time) {
     db.getTicketsTaken(
       req.query.cinema,

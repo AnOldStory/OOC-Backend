@@ -1,4 +1,4 @@
-var Models = require("../models");
+var Models = require("../../models");
 var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
@@ -207,7 +207,7 @@ exports.confirmTickets = (cinema, movie, date, time, seat, callback) => {
     cinemaId: cinema,
     movieId: movie,
     screeningDate: date,
-    ticketTime: time,
+    screeningTime: time,
     seatNumber: seat
   }).then(result => {
     console.log("adding to tickets...");
@@ -218,21 +218,3 @@ exports.confirmTickets = (cinema, movie, date, time, seat, callback) => {
     return callback(err, false);
   });
 };
-
-exports.getUserbyIdPW = (id, pw, callback) => {
-  Models.Customer.findAll({
-    subQuery: false,
-    where: {
-      [Op.and]: [{customerId: id}
-      // , {customerPW: pw}
-      ]
-    }
-  }).then(result => {
-    console.log("getting customers...");
-    return callback(null, result);
-  }).catch(err => {
-    console.log("error");
-    console.log(err);
-    return callback(err, false);
-  });
-}

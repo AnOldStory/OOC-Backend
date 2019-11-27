@@ -5,30 +5,17 @@ var router = express.Router();
 var jwt = require("../utils/jwt");
 
 /* DB */
-var db = require("./database");
+// var db = require("./[reserve]database");
 
 /* Main page */
 router.get("/", (req, res, next) => {
-  // console.log(req.query);
-  // req.query.id = 1;
-  let validation = true;
-  if (!req.query.id) {
-    /* Check if the request has right parameter */
-    validation = false;
-  }
+  console.log("surprise10!");
   if (validation) {
-    db.getCinemaById(req.query.id, (err, result) => {
-      if (err) {
-        /* TODO : Error Handling */
-        next();
-      } else {
-        console.log("hello");
-        res.json(result);
-      }
-    });
+    
   } else {
     /* TODO : Parameter Error Handleing */
-    next();
+    console.log("surprise!");
+    //next();
   }
 });
 
@@ -37,13 +24,15 @@ router.get("/token/enc", (req, res, next) => {
     jwt.encryption({ foo: req.query.value }, (err, token) => {
       if (err) {
         console.log(err);
-        next();
+        console.log("surprise1!");
+        //next();
       } else {
         res.json(token);
       }
     });
   } else {
-    next();
+    console.log("surprise2!");
+    //next();
   }
 });
 
@@ -51,7 +40,8 @@ router.get("/token/dec", (req, res, next) => {
   jwt.decryption(req.query.token, (err, value) => {
     if (err) {
       console.log(err);
-      next();
+      console.log("surprise3!");
+      //next();
     } else {
       res.json(value);
     }
