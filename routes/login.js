@@ -14,19 +14,20 @@ const publicPem = rsa.exportKey("public");
 const jwt = require("../utils/jwt");
 // var jwt = require("jsonwebtoken");
 
-router.post("/", (req, res, next) => {
-  if (!req.params.id || !req.params.pwEnc) {
+router.get("/", (req, res, next) => {
+  if (!req.query.id || !req.query.pwEnc) {
     res.send(publicPem);
-    // var givenId = rsa.decrypt(req.params.idEnc, 'utf-8');
-    console.log(req.params.id);
-    console.log(req.params.pwEnc);
+  } else if (req.query.id && req.query.pwEnc) {
+    // var givenId = rsa.decrypt(req.body.idEnc, 'utf-8');
+    console.log(req.query.id);
+    console.log(req.query.pwEnc);
     try {
-      rsa.decrypt(req.params.passEnc, "utf-8");
+      rsa.decrypt(req.query.passEnc, "utf-8");
     } catch (e) {
       console.log(e);
       next();
     }
-    jwt.encryption({ user: req.params.id }, (err, token) => {
+    jwt.encryption({ user: req.query.id }, (err, token) => {
       console.log(token);
       console.log("encryption");
       if (err) {
@@ -34,7 +35,7 @@ router.post("/", (req, res, next) => {
         console.log("can1");
         next();
       } else {
-        db.getUserbyIdPW(req.params.id, req.params.pwEnc, (err, result) => {
+        db.getUserbyIdPW(req.query.id, req.query.pwEnc, (err, result) => {
           console.log("getuserbyid");
           if (err) {
             console.log(err);
@@ -61,8 +62,48 @@ router.post("/", (req, res, next) => {
   }
 });
 
-function rsaDecrypt(string) {
-  return new Promise();
-}
+router.post("/", (req, res, next) => {
+  if (!req.body.id || !req.body.pwEnc) {
+    console.log(req);
+    console.log(req.body);
+    console.log(req.body.id);
+    console.log(req.body.pwEnc);
+    res.send(publicPem);
+  } else if (req.body.id && req.body.pwEnc) {
+    try {
+      rsa.decrypt(req.body.passEnc, "utf-8");
+    } catch (e) {
+      console.log(e);
+      next();
+    }
+    db.getUserbyIdPW(req.body.id, req.body.pwEnc, (err, result) => {
+      console.log("getuserbyid");
+      if (err) {
+        console.log(err);
+        console.log("can2");
+        next();
+      } else {
+        console.log("hello\n===========================");
+        console.log(result);
+        jwt.encryption({ user: req.body.id }, (err, token) => {
+          console.log(token);
+          if (err) {
+            console.log(err);
+            console.log("can1");
+            next();
+          } else {
+            console.log("cant");
+            res.send(token);
+          }
+        });
+      }
+    });
+    console.log("vast emptiness");
+    // bcrypt 추가되면 전달하는 키워드가 바뀔예정
+  } else {
+    console.log("Elsa");
+    next();
+  }
+});
 
 module.exports = router;
