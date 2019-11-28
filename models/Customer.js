@@ -41,13 +41,13 @@ module.exports = function(sequelize, Datatypes) {
   //   return bcrypt.compareSync(password, this.local.password);
   // };
 
-  Customer.hook("beforeCreate", function(Customer) {
-    Customer.customerPW = bcrypt.hashSync(
-      Customer.customerPW,
-      bcrypt.genSaltSync(10),
-      null
-    );
-  });
+  // Customer.hook("beforeCreate", function(Customer) {
+  //   Customer.customerPW = bcrypt.hashSync(
+  //     Customer.customerPW,
+  //     bcrypt.genSaltSync(10),
+  //     null
+  //   );
+  // });
 
   Customer.associate = function(models) {
     Customer.hasMany(models.Ticket, {

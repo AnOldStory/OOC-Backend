@@ -14,15 +14,19 @@ const publicPem = rsa.exportKey("public");
 const jwt = require("../utils/jwt");
 // var jwt = require("jsonwebtoken");
 
-router.get("/", (req, res, next) => {
-  if (!req.query.id || !req.query.pwEnc) {
+router.post("/", (req, res, next) => {
+  if (!req.params.id || !req.params.pwEnc) {
     res.send(publicPem);
-  } else if (req.query.id && req.query.pwEnc) {
     // var givenId = rsa.decrypt(req.params.idEnc, 'utf-8');
-    console.log(req.query.id);
-    console.log(req.query.pwEnc);
-    rsa.decrypt(req.params.passEnc, "utf-8");
-    jwt.encryption({ user: req.query.id }, (err, token) => {
+    console.log(req.params.id);
+    console.log(req.params.pwEnc);
+    try {
+      rsa.decrypt(req.params.passEnc, "utf-8");
+    } catch (e) {
+      console.log(e);
+      next();
+    }
+    jwt.encryption({ user: req.params.id }, (err, token) => {
       console.log(token);
       console.log("encryption");
       if (err) {
@@ -30,7 +34,7 @@ router.get("/", (req, res, next) => {
         console.log("can1");
         next();
       } else {
-        db.getUserbyIdPW(req.query.id, req.query.pwEnc, (err, result) => {
+        db.getUserbyIdPW(req.params.id, req.params.pwEnc, (err, result) => {
           console.log("getuserbyid");
           if (err) {
             console.log(err);
