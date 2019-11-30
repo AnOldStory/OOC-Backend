@@ -13,7 +13,7 @@ module.exports = function(app) {
   app.use("/book", bookRouter);
   app.use("/login", loginRouter);
   app.use("/admin", adminRouter);
-  app.use("/signIn", signInRouter);
+  app.use("/signin", signInRouter);
   //app.use("/users", usersRouter);
 
   // error handler

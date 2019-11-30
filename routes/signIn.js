@@ -15,7 +15,7 @@ const jwt = require("../utils/jwt");
 // var jwt = require("jsonwebtoken");
 
 router.get("/", (req, res, next) => {
-    if (!req.query) {
+    if (Object.keys(req.query).length === 0) {
         try {
             res.send(publicPem);
         } catch(e) {
@@ -39,55 +39,55 @@ router.get("/", (req, res, next) => {
     }
 });
 
-router.post("/", (req, res, next) => {
-	if (!req.body.id || !req.body.pwEnc) {
-		console.log(req);
-		console.log(req.body);
-		console.log(req.body.id);
-		console.log(req.body.pwEnc);
-		res.send(publicPem);
-	} else if (req.body.member) {
-		const passwd = "";
-		try {
-			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
-		} catch (e) {
-			console.log(e);
-			next();
-		}
-		db.getUserbyIdPW(req.body.id, passwd, (err, result) => {
-			console.log("getuserbyid");
-			if (err) {
-				console.log(err);
-				console.log("can2");
-				next();
-			} else if(result[0]) {
-				console.log("hello\n===========================");
-				console.log(result);
-				jwt.encryption({ user: req.body.id }, (err, token) => {
-					console.log(token);
-					if (err) {
-						console.log(err);
-						console.log("can1");
-						next();
-					} else {
-						console.log("cant");
-						res.send(token);
-					}
-				});
-			} else {
-				console.log("search failed in login.js");
-				next();
-			}
-		});
-		console.log("vast emptiness");
-		// bcrypt 추가되면 전달하는 키워드가 바뀔예정
-	} else if (!req.body.member) {
+// router.post("/", (req, res, next) => {
+// 	if (!req.body.id || !req.body.pwEnc) {
+// 		console.log(req);
+// 		console.log(req.body);
+// 		console.log(req.body.id);
+// 		console.log(req.body.pwEnc);
+// 		res.send(publicPem);
+// 	} else if (req.body.member) {
+// 		const passwd = "";
+// 		try {
+// 			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
+// 		} catch (e) {
+// 			console.log(e);
+// 			next();
+// 		}
+// 		db.getUserbyIdPW(req.body.id, passwd, (err, result) => {
+// 			console.log("getuserbyid");
+// 			if (err) {
+// 				console.log(err);
+// 				console.log("can2");
+// 				next();
+// 			} else if(result[0]) {
+// 				console.log("hello\n===========================");
+// 				console.log(result);
+// 				jwt.encryption({ user: req.body.id }, (err, token) => {
+// 					console.log(token);
+// 					if (err) {
+// 						console.log(err);
+// 						console.log("can1");
+// 						next();
+// 					} else {
+// 						console.log("cant");
+// 						res.send(token);
+// 					}
+// 				});
+// 			} else {
+// 				console.log("search failed in login.js");
+// 				next();
+// 			}
+// 		});
+// 		console.log("vast emptiness");
+// 		// bcrypt 추가되면 전달하는 키워드가 바뀔예정
+// 	} else if (!req.body.member) {
 		
-	} else {
-		console.log("Elsa");
-		next();
-	}
-});
+// 	} else {
+// 		console.log("Elsa");
+// 		next();
+// 	}
+// });
 
 // router.post("/", (req, res, next) => {
 // 	if (!req.body.id || !req.body.pwEnc) {
