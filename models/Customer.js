@@ -30,24 +30,23 @@ module.exports = function(sequelize, Datatypes) {
     customerEmail: {
       type: Datatypes.STRING,
       allowNull: false
-    }
-  });
-
-  // Customer.methods.generateHash = function(password) {
-  //   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-  // };
-
-  // Customer.methods.validPassword = function(password) {
-  //   return bcrypt.compareSync(password, this.local.password);
-  // };
-
-  // Customer.hook("beforeCreate", function(Customer) {
-  //   Customer.customerPW = bcrypt.hashSync(
-  //     Customer.customerPW,
-  //     bcrypt.genSaltSync(10),
-  //     null
-  //   );
-  // });
+    },
+  },
+  {
+    hooks : {
+        beforeCreate : (Customer , options) => {
+            {   
+                const salt = bcrypt.genSaltSync();
+                Customer.body = bcrypt.hashSync(Customer.body, salt);
+            }
+        }
+    },
+    instanceMethods: {
+        validPassword: function(password) {
+          return bcrypt.compareSync(password, this.password);
+        }
+      }
+});
 
   Customer.associate = function(models) {
     Customer.hasMany(models.Ticket, {

@@ -268,21 +268,34 @@ exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
     });
 };
 
-exports.confirmTickets = (cinema, movie, date, time, seat, callback) => {
-  Models.Ticket.create({
-    cinemaId: cinema,
-    movieId: movie,
-    screeningDate: date,
-    screeningTime: time,
-    seatNumber: seat
+exports.getEvents = (callback) => {
+  Models.Event.fineAll()
+  .then(result => {
+    console.log("getting events...");
+    return callback(null, result);
   })
-    .then(result => {
-      console.log("adding to tickets...");
-      return callback(null, result);
-    })
-    .catch(err => {
-      console.log("error");
-      console.log(err);
-      return callback(err, false);
-    });
-};
+  .catch(err => {
+    console.log("error");
+    console.log.log(err);
+    return callback(err, false);
+  });
+}
+
+// exports.confirmTickets = (cinema, movie, date, time, seat, callback) => {
+//   Models.Ticket.create({
+//     cinemaId: cinema,
+//     movieId: movie,
+//     screeningDate: date,
+//     screeningTime: time,
+//     seatNumber: seat
+//   })
+//     .then(result => {
+//       console.log("adding to tickets...");
+//       return callback(null, result);
+//     })
+//     .catch(err => {
+//       console.log("error");
+//       console.log(err);
+//       return callback(err, false);
+//     });
+// };

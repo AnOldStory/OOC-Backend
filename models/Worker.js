@@ -6,6 +6,10 @@ module.exports = function(sequelize, Datatypes) {
       autoIncrement: true,
       primaryKey: true
     },
+    empPW: {
+      type: Datatypes.STRING,
+      allowNull: false
+    },
     empName: {
       type: Datatypes.STRING,
       allowNull: false
@@ -18,7 +22,22 @@ module.exports = function(sequelize, Datatypes) {
       type: Datatypes.STRING,
       allowNull: false
     }
-  });
+  },
+  {
+    hooks : {
+        beforeCreate : (Worker , options) => {
+            {   
+                const salt = bcrypt.genSaltSync();
+                Worker.body = bcrypt.hashSync(Worker.body, salt);
+            }
+        }
+    },
+    instanceMethods: {
+        validPassword: function(password) {
+          return bcrypt.compareSync(password, this.password);
+        }
+      }
+});
 
   Worker.associate = function(models) {
     Worker.belongsTo(models.Cinema, {

@@ -3,7 +3,7 @@ const router = express.Router();
 const RSA = require("node-rsa");
 const fs = require("fs");
 // const db = require("./database");
-const db = require("./database/loginDb");
+const db = require("./database/signInDb");
 const rsa = new RSA();
 var rsaPublic = fs.readFileSync(__dirname + "/../public/rsa/public.pem");
 var rsaPrivate = fs.readFileSync(__dirname + "/../public/rsa/private.pem");
@@ -15,11 +15,28 @@ const jwt = require("../utils/jwt");
 // var jwt = require("jsonwebtoken");
 
 router.get("/", (req, res, next) => {
-	try {
-		res.send(publicPem);
-	} catch(e) {
-		console.log(e);
-	}
+    if (!req.query) {
+        try {
+            res.send(publicPem);
+        } catch(e) {
+            console.log(e);
+        }
+    } else {
+        const passwd = "";
+		try {
+			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
+		} catch (e) {
+			console.log(e);
+			next();
+		}
+        db.addWorker(req.query.id, passwd, req.query.name, req.query.rank, req.query.birth, req.query.email, (err) => {
+            if (err) {
+                console("err");
+                console.log(err);
+                next();
+            }
+        });
+    }
 });
 
 router.post("/", (req, res, next) => {
@@ -29,7 +46,7 @@ router.post("/", (req, res, next) => {
 		console.log(req.body.id);
 		console.log(req.body.pwEnc);
 		res.send(publicPem);
-	} else if (req.body.member === 1) {
+	} else if (req.body.member) {
 		const passwd = "";
 		try {
 			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
@@ -63,17 +80,10 @@ router.post("/", (req, res, next) => {
 			}
 		});
 		console.log("vast emptiness");
-	} 
-	// else if (req.body.member === 0) {
-	// 	const passwd = "";
-	// 	try {
-	// 		passwd = rsa.decrypt(req.body.numEnc, "utf-8");
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 		next();
-	// 	}
-	// }
-	else {
+		// bcrypt 추가되면 전달하는 키워드가 바뀔예정
+	} else if (!req.body.member) {
+		
+	} else {
 		console.log("Elsa");
 		next();
 	}

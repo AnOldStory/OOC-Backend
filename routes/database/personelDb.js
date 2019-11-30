@@ -15,8 +15,31 @@ exports.getWorkers = callback => {
     });
 };
 
+exports.checkWorkerPosition = (id, pass, position, callback) => {
+  Models.Worker.findOne({
+    subQuery: false,
+    where: {
+      [Op.and]: [{ empId: id }, { empPosition: position }]
+    }
+  })
+  .then((result) => {
+    if (result.validPassword(pass)) {
+      console.log("getting workers...");
+      return callback(null, result)
+    } else {
+    console.log("search failed");
+    console.log(err)
+    return callback(err, false);
+    }
+  }).catch(err => {
+    console.log("error");
+    console.log(err)
+    return callback(err, false);
+  });
+};
+
 exports.getWorkersbyId = (id, callback) => {
-  Models.Schedule.findAll({
+  Models.Worker.findAll({
     subQuery: false,
     where: {
       [Op.and]: [{ empId: id }]
