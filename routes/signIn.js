@@ -34,6 +34,9 @@ router.get("/", (req, res, next) => {
                 console("err");
                 console.log(err);
                 next();
+            } else {
+                console.log("aloha\n================================");
+                res.json({result: "ok"});
             }
         });
     }
