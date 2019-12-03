@@ -37,8 +37,9 @@ router.post("/", (res, req, err) => {
 		} catch (e) {
 			console.log(e);
 			next();
-		}
-        db.addCustomer(info.id, passwd, info.name, info.sal, info.pos, (err) => {
+        }
+        //(passwd, info.name, 1, "12/2", info.phone, info.mail,
+        db.addCustomer(info.id, passwd, info.name, 1, "12/2", info.phone, info.mail, (err) => {
             if (err) {
                 console("err");
                 console.log(err);

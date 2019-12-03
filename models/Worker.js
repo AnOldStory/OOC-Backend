@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt-nodejs");
+
 module.exports = function(sequelize, Datatypes) {
   var Worker = sequelize.define("Worker", {
     empId: {
@@ -27,32 +29,16 @@ module.exports = function(sequelize, Datatypes) {
     hooks : {
         beforeCreate : (Worker , options) => {
             {   
-                return new Promise ((resolve, reject) => {
-                  bcrypt.genSalt(10, (err, salt) => {
-                    if (err) {
-                      console.log("at worker gensalt");
-                      console.log(err);
-                      return reject(err);
-                    } else {
-                      bcrypt.hash(Worker.empPW, salt, (err, hash) => {
-                        if (err) {
-                          console.log("error at worker hash");
-                          console.log(err);
-                        }
-                        Worker.setDataValue('empPW', hash);
-                        return resolve(Worker, options);
-                      });
-                    }
-                  });
-                })
+                const salt = bcrypt.genSaltSync(10);
+                Worker.empPW = bcrypt.hashSync(Worker.empPW, salt);
             }
         }
     },
     instanceMethods: {
-      validPassword: (password, hash) => {
-        return bcrypt.compareSync(password, hash);
+        validPassword: function(plain, hash) {
+          return bcrypt.compareSync(plain, hash);
+        }
       }
-    }
 });
 
   Worker.associate = function(models) {

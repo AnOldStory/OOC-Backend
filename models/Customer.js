@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt-nodejs");
 
 module.exports = function(sequelize, Datatypes) {
   var Customer = sequelize.define("Customer", {
@@ -38,32 +38,34 @@ module.exports = function(sequelize, Datatypes) {
     hooks : {
         beforeCreate : (Customer , options) => {
             {   
+              const salt = bcrypt.genSaltSync(10);
+              Customer.customerPW = bcrypt.hashSync(Customer.customerPW, salt);
                 // console.log("in customer hash");
-                return new Promise ((resolve, reject) => {
-                  bcrypt.genSalt(10, (err, salt) => {
-                    if (err) {
-                      console.log("at customer gensalt");
-                      console.log(err);
-                      return reject(err);
-                    } else {
-                      bcrypt.hash(Customer.customerPW, salt, (err, hash) => {
-                        if (err) {
-                          console.log("error at customer hash");
-                          console.log(err);
-                        }
+                // return new Promise ((resolve, reject) => {
+                //   bcrypt.genSalt(10, (err, salt) => {
+                //     if (err) {
+                //       console.log("at customer gensalt");
+                //       console.log(err);
+                //       return reject(err);
+                //     } else {
+                //       bcrypt.hash(Customer.customerPW, salt, (err, hash) => {
+                //         if (err) {
+                //           console.log("error at customer hash");
+                //           console.log(err);
+                //         }
                         // console.log(typeof hash);
                         // console.log(typeof Customer.customerPW);
                         // Customer.update({customerPW: hash});
                         // Customer.customerPW = hash;
-                        Customer.setDataValue('customerPW', hash);
+                        // Customer.setDataValue('customerPW', hash);
                         // console.log(hash);
                         // console.log("at customer");
                         // console.log(Customer.customerPW);
-                        return resolve(Customer, options);
-                      });
-                    }
-                  });
-                })
+                        // return resolve(Customer, options);
+                //       });
+                //     }
+                //   });
+                // })
 
                 // bcrypt.genSalt(10, (err, salt) => {
                 //   if (err) {

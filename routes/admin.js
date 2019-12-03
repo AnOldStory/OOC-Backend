@@ -202,7 +202,7 @@ router.post("/personel/signin", (res, req, err) => {
     console.log(e);
     next();
   }
-      db.addWorker(passwd, info.name, 1, "12/2", info.phone, info.mail, (err) => {
+      db.addWorker(passwd, info.name, info.sal, info.pos, (err) => {
           if (err) {
               console("err");
               console.log(err);
