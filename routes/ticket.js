@@ -6,7 +6,7 @@ const ticketDb = require("./database/ticketDb");
 
 
 router.get("/", (req, res, next) => {
-  if (req.body.token) {
+  if (req.query.token) {
     jwt.decryption(req.query.token, (err, value) => {
       if (err) {
         console.log(err);
