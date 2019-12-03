@@ -23,30 +23,36 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-	if (!req.body.id || !req.body.pwEnc) {
-		console.log(req);
-		console.log(req.body);
+	console.log(req.body);
+	const info = JSON.parse(req.body);
+	console.log(Object.keys(info));
+	console.log(info.member);
+	console.log(Object.keys(req.body).length);
+	console.log("at login post")
+	if (Object.keys(req.body).length === 0) {
+		// console.log(req);
+		// console.log(req.body);
 		console.log(req.body.id);
 		console.log(req.body.pwEnc);
 		res.send(publicPem);
-	} else if (req.body.member === 1) {
-		const passwd = "";
+	} else if (info.member === true) {
+		var passwd = "";
 		try {
-			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
+			passwd = rsa.decrypt(info.pwEnc, "utf-8");
 		} catch (e) {
 			console.log(e);
 			next();
 		}
-		db.getUserbyIdPW(req.body.id, passwd, (err, result) => {
+		db.getUserbyIdPW(info.id, passwd, (err, result) => {
+			console.log(result);
 			console.log("getuserbyid");
 			if (err) {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if(result[0]) {
+			} else if(result) {
 				console.log("hello\n===========================");
-				console.log(result);
-				jwt.encryption({ user: req.body.id }, (err, token) => {
+				jwt.encryption({ user: info.id }, (err, token) => {
 					console.log(token);
 					if (err) {
 						console.log(err);
@@ -64,15 +70,6 @@ router.post("/", (req, res, next) => {
 		});
 		console.log("vast emptiness");
 	} 
-	// else if (req.body.member === 0) {
-	// 	const passwd = "";
-	// 	try {
-	// 		passwd = rsa.decrypt(req.body.numEnc, "utf-8");
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 		next();
-	// 	}
-	// }
 	else {
 		console.log("Elsa");
 		next();

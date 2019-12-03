@@ -22,6 +22,7 @@ module.exports = function(app) {
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
     console.log("FaDe");
+    console.log(err)
     // render the error page
     res.status(err.status || 500);
     res.json(err);

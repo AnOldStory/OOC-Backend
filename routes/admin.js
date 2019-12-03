@@ -178,4 +178,52 @@ router.get("/personel", (req, res, next) => {
   }
 });
 
+router.post("/personel/signin", (res, req, err) => {
+  const info = JSON.parse(req.req.body);
+  // if (err) {
+  //     console.log(err);
+  //     // req = JSON.parse(req.req);
+  //     console.log("at signin 21");
+  //     console.log(info);
+  // } else 
+  if (Object.keys(info).length === 0) {
+  // } else if (!req.body) {
+      console.log("at signin 26");
+      console.log(info);
+      console.log(Object.keys(info).length);
+  res.send(publicPem);
+} else {
+      console.log("at signin");
+      console.log(info)
+      var passwd = "";
+  try {
+    passwd = rsa.decrypt(info.passEnc, "utf-8");
+  } catch (e) {
+    console.log(e);
+    next();
+  }
+      db.addWorker(passwd, info.name, 1, "12/2", info.phone, info.mail, (err) => {
+          if (err) {
+              console("err");
+              console.log(err);
+              next();
+          } else {
+              console.log("aloha\n================================");
+              res.json({result: "ok"});
+          }
+      });
+  }
+});
+
+router.get("/personel/signin", (req, res, next) => {
+console.log(req.query);
+  if (Object.keys(req.query).length === 0) {
+      try {
+          res.send(publicPem);
+      } catch(e) {
+          console.log(e);
+      }
+  }
+});
+
 module.exports = router;

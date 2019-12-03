@@ -27,16 +27,32 @@ module.exports = function(sequelize, Datatypes) {
     hooks : {
         beforeCreate : (Worker , options) => {
             {   
-                const salt = bcrypt.genSaltSync();
-                Worker.body = bcrypt.hashSync(Worker.body, salt);
+                return new Promise ((resolve, reject) => {
+                  bcrypt.genSalt(10, (err, salt) => {
+                    if (err) {
+                      console.log("at worker gensalt");
+                      console.log(err);
+                      return reject(err);
+                    } else {
+                      bcrypt.hash(Worker.empPW, salt, (err, hash) => {
+                        if (err) {
+                          console.log("error at worker hash");
+                          console.log(err);
+                        }
+                        Worker.setDataValue('empPW', hash);
+                        return resolve(Worker, options);
+                      });
+                    }
+                  });
+                })
             }
         }
     },
     instanceMethods: {
-        validPassword: function(password) {
-          return bcrypt.compareSync(password, this.password);
-        }
+      validPassword: (password, hash) => {
+        return bcrypt.compareSync(password, hash);
       }
+    }
 });
 
   Worker.associate = function(models) {

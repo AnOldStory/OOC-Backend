@@ -92,6 +92,7 @@ router.get("/", (req, res, next) => {
       );
     }
   } else if (req.query.movie && req.query.date && req.query.cinema) {
+    console.log(req.query.date)
     db.getSchedulesbyCinemaMovieDate(
       req.query.cinema,
       req.query.movie,

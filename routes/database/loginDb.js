@@ -28,7 +28,8 @@ exports.getUserbyIdPW = (id, pw, callback) => {
     }
   })
   .then((result) => {
-    if (result.validPassword(pw)) {
+    console.log(Object.keys(result._modelOptions.instanceMethods));
+    if (result._modelOptions.instanceMethods.validPassword(pw, result.dataValues.customerPW)) {
       console.log("getting customers...");
       return callback(null, result)
     } else {

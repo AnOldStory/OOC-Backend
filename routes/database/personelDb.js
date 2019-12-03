@@ -23,7 +23,7 @@ exports.checkWorkerPosition = (id, pass, position, callback) => {
     }
   })
   .then((result) => {
-    if (result.validPassword(pass)) {
+    if (result._modelOptions.instanceMethods.validPassword(pass, result.dataValues.empPW)) {
       console.log("getting workers...");
       return callback(null, result)
     } else {

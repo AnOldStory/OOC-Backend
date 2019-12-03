@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 module.exports = function(sequelize, Datatypes) {
   var Customer = sequelize.define("Customer", {
     customerId: {
@@ -8,7 +10,7 @@ module.exports = function(sequelize, Datatypes) {
     customerPW: {
       type: Datatypes.STRING,
       allowNull: false,
-      primaryKey: true
+      // primaryKey: true
     },
     customerName: {
       type: Datatypes.STRING,
@@ -36,14 +38,60 @@ module.exports = function(sequelize, Datatypes) {
     hooks : {
         beforeCreate : (Customer , options) => {
             {   
-                const salt = bcrypt.genSaltSync();
-                Customer.body = bcrypt.hashSync(Customer.body, salt);
+                // console.log("in customer hash");
+                return new Promise ((resolve, reject) => {
+                  bcrypt.genSalt(10, (err, salt) => {
+                    if (err) {
+                      console.log("at customer gensalt");
+                      console.log(err);
+                      return reject(err);
+                    } else {
+                      bcrypt.hash(Customer.customerPW, salt, (err, hash) => {
+                        if (err) {
+                          console.log("error at customer hash");
+                          console.log(err);
+                        }
+                        // console.log(typeof hash);
+                        // console.log(typeof Customer.customerPW);
+                        // Customer.update({customerPW: hash});
+                        // Customer.customerPW = hash;
+                        Customer.setDataValue('customerPW', hash);
+                        // console.log(hash);
+                        // console.log("at customer");
+                        // console.log(Customer.customerPW);
+                        return resolve(Customer, options);
+                      });
+                    }
+                  });
+                })
+
+                // bcrypt.genSalt(10, (err, salt) => {
+                //   if (err) {
+                //     console.log("at customer gensalt");
+                //     console.log(err);
+                //   } else {
+                //     bcrypt.hash(Customer.customerPW, salt, (err, hash) => {
+                //       if (err) {
+                //         console.log("error at customer hash");
+                //         console.log(err);
+                //       }
+                //       console.log(typeof hash);
+                //       console.log(typeof Customer.customerPW);
+                //       Customer.update({customerPW: hash});
+                //       // Customer.customerPW = hash;
+                //       console.log(hash);
+                //       console.log("at customer");
+                //       console.log(Customer.customerPW);
+                //     });
+                //   }
+                //   console.log("end");
+                // });
             }
         }
     },
     instanceMethods: {
-        validPassword: function(password) {
-          return bcrypt.compareSync(password, this.password);
+        validPassword: (password, hash) => {
+          return bcrypt.compareSync(password, hash);
         }
       }
 });

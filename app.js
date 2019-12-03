@@ -23,10 +23,12 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(bodyParser.raw());
 app.use(bodyParser.text());
-app.use(express.json());
+app.use(bodyParser.json());
+// app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.bodyParser());
 
 mainSequelize.sequelize
   .sync()
