@@ -91,82 +91,122 @@ router.get("/", (req, res, next) => {
         }
       );
     }
-  } else if (req.query.movie && req.query.date && req.query.cinema) {
-    console.log(req.query.date)
-    db.getSchedulesbyCinemaMovieDate(
-      req.query.cinema,
-      req.query.movie,
-      req.query.date,
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          next();
-        } else {
-          console.log("hello\n===========================");
-          res.json(result);
-        }
-      }
-    );
-  } else if (req.query.movie && req.query.date && req.query.cinema && req.query.time) {
-    db.getTicketsTaken(
-      req.query.cinema,
-      req.query.movie,
-      req.query.date,
-      req.query.time,
-      (err, result) => {
-        if (err) {
-          next();
-        } else {
-          console.log("hello");
-          res.json(result);
-        }
-      }
-    );
-  } else if (req.query.movie && req.query.date && req.query.cinema && req.query.time && req.query.seat) {
-    db.confirmTickets(
-      req.query.cinema,
-      req.query.movie,
-      req.query.date,
-      req.query.time,
-      req.query.seatNo,
-      (err, result) => {
-        if (err) {
-          next();
-        } else {
-          console.log("hello");
-          res.json(result);
-        }
-      }
-    );
-  } else if (req.query.movie && req.query.date && req.query.cinema && req.query.time && req.query.seat && req.query.token) {
-    jwt.decryption(req.query.token, (err, value) => {
-      if (err) {
-        console.log(err);
-        console.log("surprise3!");
-        //next();
-      } else {
-        loginDb.getUserbyId(value, (err, user) => {
+  } else if (Object.keys(req.query).length === 3) {
+    if (req.query.movie && req.query.date && req.query.cinema) {
+      console.log(req.query.date)
+      db.getSchedulesbyCinemaMovieDate(
+        req.query.cinema,
+        req.query.movie,
+        req.query.date,
+        (err, result) => {
           if (err) {
             console.log(err);
             next();
-          } else if (user[0]) {
-            db.getEvents((err, result) => {
-              if (err) {
-                next();
-              } else {
-                console.log("hello");
-                res.json(result);
-              }
-            });
           } else {
-            console.log("search failed");
+            console.log("hello\n===========================");
+            res.json(result);
+          }
+        }
+      );
+    } else {
+      next();
+    }
+  } else if (Object.keys(req.query).length === 4) {
+      if (req.query.movie && req.query.date && req.query.cinema && req.query.time) {
+      db.getTicketsTaken(
+        req.query.cinema,
+        req.query.movie,
+        req.query.date,
+        req.query.time,
+        (err, result) => {
+          if (err) {
             next();
-          } 
-        });
-      }
-    });
+          } else {
+            console.log("hello");
+            res.json(result);
+          }
+        }
+      );
+    } else {
+      next();
+    }
+  } else if (Object.keys(req.query).length === 5) {
+      if (req.query.movie && req.query.date && req.query.cinema && req.query.time && req.query.seat) {
+      db.confirmTickets(
+        req.query.cinema,
+        req.query.movie,
+        req.query.date,
+        req.query.time,
+        req.query.seatNo,
+        (err, result) => {
+          if (err) {
+            next();
+          } else {
+            console.log("hello");
+            res.json(result);
+          }
+        }
+      );
+    } else {
+      next();
+    }
+  } else if (Object.keys(req.query).length === 6) { 
+    if (req.query.movie && req.query.date && req.query.cinema && req.query.time && req.query.seat && req.query.token) {
+      jwt.decryption(req.query.token, (err, value) => {
+        if (err) {
+          console.log(err);
+          console.log("surprise3!");
+          //next();
+        } else {
+          loginDb.getUserbyId(value.user, (err, user) => {
+            if (err) {
+              console.log(err);
+              next();
+            } else if (user[0]) {
+              db.getEvents((err, result) => {
+                if (err) {
+                  next();
+                } else {
+                  console.log("hello");
+                  res.json(result);
+                }
+              });
+            } else {
+              console.log("search failed");
+              next();
+            } 
+          });
+        }
+      });
+    } else {
+      next();
+    }
   } else {
-    next();
+    if (req.query.cinema && req.query.showroom && req.query.movie &&
+      req.query.date && req.query.time && req.query.seats && req.query.token &&
+      req.query.price && req.query.payment && req.query.event) {
+      jwt.decryption(req.query.token, (err, value) => {
+        if (err) {
+          console.log(err);
+          console.log("surprise3!");
+          //next();
+        } else {
+          bookDb.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
+                                req.query.date, req.query.time, req.query.seats, value.user,
+                                req.query.price, req.query.payment, req.query.event, (err, result) => {
+            if (err) {
+              console.log(err);
+              next();
+            } else {
+              console.log("hello\n=======================");
+              res.json(result);
+            } 
+          });
+        }
+      });  
+    } else {
+      next();
+    }
   }
 });
 

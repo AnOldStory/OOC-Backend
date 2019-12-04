@@ -1,10 +1,10 @@
 module.exports = {
   DATABASE: {
-    host: "write here",
-    port: "5432", //"3306",
-    user: "write here",
-    password: "write here",
-    database: "OOC"
+    host: "ooc-191017.cwfdsu9jvod1.ap-northeast-2.rds.amazonaws.com",
+    port: "3306", //"3306",
+    user: "admin",
+    password: "cinema1234",
+    database: "cinema"
   },
   SESSION_SECRET: "ThisIsMySecret"
 };

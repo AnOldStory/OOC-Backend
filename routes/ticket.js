@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
 // const db = require("./database");
-const loginDb = require("./database/logDb");
+const loginDb = require("./database/loginDb");
 const ticketDb = require("./database/ticketDb");
+const jwt = require("../utils/jwt");
 
 
 router.get("/", (req, res, next) => {
+  console.log(req.query.token)
   if (req.query.token) {
     jwt.decryption(req.query.token, (err, value) => {
       if (err) {
@@ -13,7 +15,8 @@ router.get("/", (req, res, next) => {
         console.log("surprise3!");
         next();
       } else {
-        loginDb.getUserbyId(value, (err, result) => {
+        console.log(value.user)
+        loginDb.getUserbyId(value.user, (err, result) => {
           if (err) {
             console.log(err);
             console.log("at /ticket getuserbyid");

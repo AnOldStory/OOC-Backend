@@ -3,6 +3,7 @@ var bookRouter = require("./book");
 var loginRouter = require("./login");
 const adminRouter = require("./admin");
 const signInRouter = require("./signIn");
+const ticketRouter = require("./ticket");
 //var usersRouter = require("./users");
 
 /* preprosessing  */
@@ -14,6 +15,7 @@ module.exports = function(app) {
   app.use("/login", loginRouter);
   app.use("/admin", adminRouter);
   app.use("/signin", signInRouter);
+  app.use("/ticket", ticketRouter);
   //app.use("/users", usersRouter);
 
   // error handler
