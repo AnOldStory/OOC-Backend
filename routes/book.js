@@ -183,7 +183,7 @@ router.get("/", (req, res, next) => {
     }
   } else {
     if (req.query.cinema && req.query.showroom && req.query.movie &&
-      req.query.date && req.query.time && req.query.seats && req.query.token &&
+      req.query.screen && req.query.seats && req.query.token &&
       req.query.price && req.query.payment && req.query.event) {
       jwt.decryption(req.query.token, (err, value) => {
         if (err) {
@@ -191,8 +191,9 @@ router.get("/", (req, res, next) => {
           console.log("surprise3!");
           //next();
         } else {
-          bookDb.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
-                                req.query.date, req.query.time, req.query.seats, value.user,
+          const givenSeats = req.query.seats.split(",");
+          db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
+                                req.query.screen, givenSeats, value.user,
                                 req.query.price, req.query.payment, req.query.event, (err, result) => {
             if (err) {
               console.log(err);

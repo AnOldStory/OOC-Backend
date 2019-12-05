@@ -22,13 +22,13 @@ module.exports = function(sequelize, Datatypes) {
       },
       as: "screeningIdTicket"
     });
-    Ticket.belongsTo(models.Schedule, {
-      foreignKey: {
-        name: "screeningTime",
-        allowNull: false
-      },
-      as: "screeningTimeTicket"
-    });
+    // Ticket.belongsTo(models.Schedule, {
+    //   foreignKey: {
+    //     name: "screeningTime",
+    //     allowNull: false
+    //   },
+    //   as: "screeningTimeTicket"
+    // });
     Ticket.belongsTo(models.Schedule, {
       foreignKey: {
         name: "cinemaId",

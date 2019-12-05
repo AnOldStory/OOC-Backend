@@ -7,8 +7,7 @@ module.exports = function(sequelize, Datatypes) {
     },
     screeningTime: {
       type: Datatypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     screeningDate: {
       type: Datatypes.STRING,
@@ -53,14 +52,14 @@ module.exports = function(sequelize, Datatypes) {
       as: "screeningIdTicket",
       allowNull: false
     });
-    Schedule.hasMany(models.Ticket, {
-      foreignKey: {
-        name: "screeningTime",
-        allowNull: false
-      },
-      as: "screeningTimeTicket",
-      allowNull: false
-    });
+    // Schedule.hasMany(models.Ticket, {
+    //   foreignKey: {
+    //     name: "screeningTime",
+    //     allowNull: false
+    //   },
+    //   as: "screeningTimeTicket",
+    //   allowNull: false
+    // });
     Schedule.hasMany(models.Ticket, {
       foreignKey: {
         name: "cinemaId",

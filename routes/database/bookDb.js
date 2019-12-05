@@ -247,15 +247,20 @@ exports.getSchedulesbyCinemaMovieDate = (cinema, movie, date, callback) => {
 
 exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
   Models.Ticket.findAll({
-    subQuery: false,
-    where: {
-      [Op.and]: [
-        { cinemaId: cinema },
-        { movieId: movie },
-        { screeningDate: date },
-        { screeningTime: time }
-      ]
-    }
+    include: [
+      {
+        model: Models.Schedule,
+        as: "screeningIdTicket",
+        where: { 
+          [Op.and]: [
+            { cinemaId: cinema },
+            { movieId: movie },
+            { screeningDate: date },
+            { screeningTime: time }
+          ],
+          screeningId: Sequelize.col('Ticket.screeningId')}
+      }
+    ]
   })
     .then(result => {
       console.log("getting tickets...");
@@ -281,29 +286,42 @@ exports.getEvents = (callback) => {
   });
 }
 
-exports.confirmTickets = (cinema, showroom, movie, date, time, seats, id, price, payment, event, callback) => {
-  seats.forEach((seat) => {
+exports.confirmTickets = (cinema, showroom, movie, screen, seats, id, price, payment, event, callback) => {
+  console.log(seats)
+  seats.forEach((seat, index) => {
+    console.log(seat)
+    console.log(index)
+    if (Object(seats).length === index+1) {
+      const result = {"result": "OK"}
+      console.log("added to tickets...");
+      return callback(null, result);
+    }
+    console.log("adding to tickets...")
     Models.Ticket.create({
       cinemaId: cinema,
-      showroomId: showroom,
+      showRoomId: showroom,
       movieId: movie,
-      screeningDate: date,
-      screeningTime: time,
+      screeningId: screen,
       seatNumber: seat,
       customerId: id,
       ticketPrice: price,
-      ticketPayment: payment,
+      ticketPaymentType: payment,
       eventId: event
-    })
-    .then(result => {
-      console.log("adding to tickets...");
-      return callback(null, result);
-    })
-    .catch(err => {
-      console.log("error");
+    }, err => {
+      if (err) {
+        console.log("error");
         console.log(err);
-      return callback(err, false);
-    });
-   }
-  )
+        return callback(err, false);
+      }
+    })
+  })
+  // .then(result => {
+    // console.log("adding to tickets...");
+    // return callback(null, result);
+  // })
+  // .catch(err => {
+    // console.log("error");
+    // console.log(err);
+    // return callback(err, false);
+  // });
 };

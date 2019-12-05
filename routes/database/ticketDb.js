@@ -17,10 +17,19 @@ exports.getTickets = (callback) => {
 
 exports.getTicketById = (id, callback) => {
     Models.Ticket.findAll({
-        subQuery: false,
-        where: {
-          [Op.and]: [{ customerId: id }]
+      subQuery: false,
+      where: {
+        [Op.and]: [{ customerId: id }]
+      },
+      include: [
+        {
+          model: Models.Schedule,
+          as: "screeningIdTicket",
+          where: {
+            screeningId: Sequelize.col('Ticket.screeningId')
+          }
         }
+      ]
     })
         .then(result => {
           console.log("getting all tickets...");
