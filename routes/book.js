@@ -211,6 +211,7 @@ router.get("/", (req, res, next) => {
                 console.log(err);
                 next();
               } else {
+		result.serial = serial
                 console.log("hello\n=======================");
                 res.json(result);
               } 
@@ -232,7 +233,6 @@ router.get("/", (req, res, next) => {
                 console.log(err);
                 next();
               } else {
-                result.serial = serial
                 console.log("hello\n=======================");
                 res.json(result);
               } 
