@@ -50,7 +50,7 @@ router.post("/", (req, res, next) => {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if(result[0] !== undefined) {
+			} else if(result) {
 				console.log("hello\n===========================");
 				jwt.encryption({ user: info.id }, (err, token) => {
 					console.log(token);
@@ -84,7 +84,7 @@ router.post("/", (req, res, next) => {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if (result[0] !== undefined) {
+			} else if (result) {
 				console.log("hello\n===========================");
 				jwt.encryption({ user: serial }, (err, token) => {
 					console.log(token);

@@ -191,18 +191,30 @@ router.get("/", (req, res, next) => {
       next();
     }
   } else {
+    console.log("in else")
+    console.log(Object.keys(req.query))
+    console.log(Object.keys(req.query).length)
+    console.log(Object.keys(req.query.token).length)
     if (req.query.cinema && req.query.showroom && req.query.movie &&
       req.query.screen && req.query.seats && req.query.token &&
       req.query.price && req.query.payment && req.query.event) {
-      if (req.query.token === 0 && req.query.phone && req.query.email) {
-        const serial = Math.floor(Math.random() * (1e8 - 1e7)) + 1e7;
+      console.log("checking params")
+	console.log(req.query.token)
+	console.log(req.query.phone)
+	console.log(req.query.email)
+	//console.log(req.query.token === '0')
+	//console.log(req.query.token === 0 && req.query.phone && req.query.email)
+	if (req.query.token === '0' && req.query.phone && req.query.email) {
+        console.log("nonmenber")
+	const serial = Math.floor(Math.random() * (1e8 - 1e7)) + 1e7;
         signinDb. addCustomer(serial, "nm", "nm", "nm",
                               "nm", "nm", req.query.phone,
                               req.query.email, (err, result) => {
           if (err) {
             console.log(err);
-              next();
+            next();
           } else {
+	    console.log("added customer")
             const givenSeats = req.query.seats.split(",");
             db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
                               req.query.screen, givenSeats, serial,
@@ -219,12 +231,14 @@ router.get("/", (req, res, next) => {
           }
         })
       } else if (Object.keys(req.query.token).length > 16) {
-        jwt.decryption(req.query.token, (err, value) => {
+        console.log("were on")
+	jwt.decryption(req.query.token, (err, value) => {
           if (err) {
             console.log(err);
             console.log("surprise3!");
             //next();
           } else {
+	    console.log("were in")
             const givenSeats = req.query.seats.split(",");
             db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
                                   req.query.screen, givenSeats, value.user,
