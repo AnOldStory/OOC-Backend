@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 // const db = require("./database");
 const db = require("./database/bookDb");
-const loginDb = require("./database/loginDb")
+const loginDb = require("./database/loginDb");
+const signinDb = require("./database/signInDb");
 const jwt = require("../utils/jwt");
 
 router.get("/", (req, res, next) => {
@@ -22,6 +23,8 @@ router.get("/", (req, res, next) => {
           console.log(err);
           next();
         } else {
+          console.log(result[0] === true);
+          console.log(result[0] === false);
           console.log("hello\n===========================");
           res.json(result);
         }
@@ -152,32 +155,38 @@ router.get("/", (req, res, next) => {
     }
   } else if (Object.keys(req.query).length === 6) { 
     if (req.query.movie && req.query.date && req.query.cinema && req.query.time && req.query.seat && req.query.token) {
-      jwt.decryption(req.query.token, (err, value) => {
-        if (err) {
-          console.log(err);
-          console.log("surprise3!");
-          //next();
-        } else {
-          loginDb.getUserbyId(value.user, (err, user) => {
-            if (err) {
-              console.log(err);
-              next();
-            } else if (user[0]) {
-              db.getEvents((err, result) => {
-                if (err) {
-                  next();
-                } else {
-                  console.log("hello");
-                  res.json(result);
-                }
-              });
-            } else {
-              console.log("search failed");
-              next();
-            } 
-          });
-        }
-      });
+      if (req.query.token === 0){
+        const result = {"result": "OK"}
+        console.log("gyello")
+        res.send(result);
+      } else {
+        jwt.decryption(req.query.token, (err, value) => {
+          if (err) {
+            console.log(err);
+            console.log("surprise3!");
+            //next();
+          } else {
+            loginDb.getUserbyId(value.user, (err, user) => {
+              if (err) {
+                console.log(err);
+                next();
+              } else if (user[0]) {
+                db.getEvents((err, result) => {
+                  if (err) {
+                    next();
+                  } else {
+                    console.log("hello");
+                    res.json(result);
+                  }
+                });
+              } else {
+                console.log("search failed");
+                next();
+              } 
+            });
+          }
+        });
+      }
     } else {
       next();
     }
@@ -185,28 +194,54 @@ router.get("/", (req, res, next) => {
     if (req.query.cinema && req.query.showroom && req.query.movie &&
       req.query.screen && req.query.seats && req.query.token &&
       req.query.price && req.query.payment && req.query.event) {
-      jwt.decryption(req.query.token, (err, value) => {
-        if (err) {
-          console.log(err);
-          console.log("surprise3!");
-          //next();
-        } else {
-          const givenSeats = req.query.seats.split(",");
-          db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
-                                req.query.screen, givenSeats, value.user,
-                                req.query.price, req.query.payment, req.query.event, (err, result) => {
-            if (err) {
-              console.log(err);
+      if (req.query.token === 0 && req.query.phone && req.query.email) {
+        const serial = Math.floor(Math.random() * (1e8 - 1e7)) + 1e7;
+        signinDb. addCustomer(serial, "nm", "nm", "nm",
+                              "nm", "nm", req.query.phone,
+                              req.query.email, (err, result) => {
+          if (err) {
+            console.log(err);
               next();
-            } else {
-              console.log("hello\n=======================");
-              res.json(result);
-            } 
-          });
-        }
-      });  
-    } else {
-      next();
+          } else {
+            const givenSeats = req.query.seats.split(",");
+            db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
+                              req.query.screen, givenSeats, serial,
+                              req.query.price, req.query.payment, req.query.event, (err, result) => {
+              if (err) {
+                console.log(err);
+                next();
+              } else {
+                console.log("hello\n=======================");
+                res.json(result);
+              } 
+            });
+          }
+        })
+      } else if (Object.keys(req.query.token).length > 16) {
+        jwt.decryption(req.query.token, (err, value) => {
+          if (err) {
+            console.log(err);
+            console.log("surprise3!");
+            //next();
+          } else {
+            const givenSeats = req.query.seats.split(",");
+            db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
+                                  req.query.screen, givenSeats, value.user,
+                                  req.query.price, req.query.payment, req.query.event, (err, result) => {
+              if (err) {
+                console.log(err);
+                next();
+              } else {
+                result.serial = serial
+                console.log("hello\n=======================");
+                res.json(result);
+              } 
+            });
+          }
+        });  
+      } else {
+        next();
+      }
     }
   }
 });

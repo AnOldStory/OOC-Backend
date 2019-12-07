@@ -50,7 +50,7 @@ router.post("/", (req, res, next) => {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if(result) {
+			} else if(result[0] !== undefined) {
 				console.log("hello\n===========================");
 				jwt.encryption({ user: info.id }, (err, token) => {
 					console.log(token);
@@ -69,8 +69,41 @@ router.post("/", (req, res, next) => {
 			}
 		});
 		console.log("vast emptiness");
-	} 
-	else {
+	} else if (info.member === false) {
+		var serial = "";
+		try {
+			serial = rsa.decrypt(info.serialEnc, "utf-8");
+		} catch (e) {
+			console.log(e);
+			next();
+		}
+		db.getUserbyId(serial, (err, result) => {
+			console.log(result);
+			console.log("getuserbyid");
+			if (err) {
+				console.log(err);
+				console.log("can2");
+				next();
+			} else if (result[0] !== undefined) {
+				console.log("hello\n===========================");
+				jwt.encryption({ user: serial }, (err, token) => {
+					console.log(token);
+					if (err) {
+						console.log(err);
+						console.log("can1");
+						next();
+					} else {
+						console.log("cant");
+						res.send(token);
+					}
+				});
+			} else {
+				console.log("search failed in login.js");
+				next();
+			}
+		});
+		console.log("vast emptiness2");
+	} else {
 		console.log("Elsa");
 		next();
 	}
