@@ -1,7 +1,17 @@
-var express = require("express");
+const express = require("express");
 var router = express.Router();
 // const personelDb = require("./database");
+const RSA = require("node-rsa");
+const fs = require("fs");
+const rsa = new RSA();
+var rsaPublic = fs.readFileSync(__dirname + "/../public/rsa/public.pem");
+var rsaPrivate = fs.readFileSync(__dirname + "/../public/rsa/private.pem");
+rsa.importKey(rsaPrivate, "private");
+const privatePem = rsa.exportKey("private");
+rsa.importKey(rsaPublic, "public");
+const publicPem = rsa.exportKey("public");
 const personelDb = require("./database/personelDb");
+const signinDb = require("./database/signInDb");
 const jwt = require("../utils/jwt");
 
 router.get("/login", (req, res, next) => {
@@ -13,29 +23,40 @@ router.get("/login", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-	if (!req.body.id || !req.body.pwEnc) {
-		console.log(req);
-		console.log(req.body);
-		console.log(req.body.id);
-		console.log(req.body.pwEnc);
-		res.send(publicPem);
-	} else if (req.body.id && req.body.pwEnc && req.body.pos) {
-		const passwd = "";
+	const info = JSON.parse(req.body);
+  	// if (err) {
+  	//     console.log(err);
+  	//     // req = JSON.parse(req.req);
+  	//     console.log("at signin 21");
+  	//     console.log(info);
+  	// } else 
+	console.log(info)
+  	if (Object.keys(info).length === 0) {
+  		// } else if (!req.body) {
+      		console.log("at signin 26");
+      		console.log(info);
+      		console.log(Object.keys(info).length);
+  		res.send(publicPem);
+	} else if (info.name && info.pwEnc && info.pos) {
+		console.log("something came");
+		var passwd = "";
 		try {
-			passwd = rsa.decrypt(req.body.passEnc, "utf-8");
+			passwd = rsa.decrypt(info.pwEnc, "utf-8");
 		} catch (e) {
 			console.log(e);
 			next();
 		}
-		personelDb.checkWorkerPosition(req.body.id, passwd, req.body.pos, (err, result) => {
+		personelDb.checkWorkerPosition(info.name, passwd, info.pos, (err, result) => {
 			console.log("getuserbyid");
+			console.log(Object.keys(result));
+			console.log(result.dataValues);
 			if (err) {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if(result[0]) {
+			} else if(result) {
 				console.log("hello\n===========================");
-				console.log(result[0]);
+				console.log(result);
 				jwt.encryption({ user: req.body.id }, (err, token) => {
 					console.log(token);
 					if (err) {
@@ -202,7 +223,7 @@ router.post("/personel/signin", (res, req, err) => {
     console.log(e);
     next();
   }
-      db.addWorker(passwd, info.name, info.sal, info.pos, (err) => {
+      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err) => {
           if (err) {
               console("err");
               console.log(err);

@@ -15,14 +15,16 @@ exports.getWorkers = callback => {
     });
 };
 
-exports.checkWorkerPosition = (id, pass, position, callback) => {
+exports.checkWorkerPosition = (name, pass, position, callback) => {
   Models.Worker.findOne({
     subQuery: false,
     where: {
-      [Op.and]: [{ empId: id }, { empPosition: position }]
+      [Op.and]: [{ empName: name }, { empPosition: position }]
     }
   })
   .then((result) => {
+    console.log(Object.keys(result._modelOptions.instanceMethods));
+    console.log(result.dataValues.empPW);
     if (result._modelOptions.instanceMethods.validPassword(pass, result.dataValues.empPW)) {
       console.log("getting workers...");
       return callback(null, result)

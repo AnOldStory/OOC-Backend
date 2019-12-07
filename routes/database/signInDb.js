@@ -23,7 +23,9 @@ exports.addWorker = (pw, name, sal, pos) => {
         empPW: pw,
         empName: name,
         empSalary: sal,
-        empPosition: pos
+        empPosition: pos,
+	cinemaId: 1,
+	depId: 1
     })
     .catch(err => {
         console.log("error");

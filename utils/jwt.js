@@ -7,7 +7,7 @@ exports.encryption = (value, callback) => {
   jwt.sign(
     value,
     config.SESSION_SECRET,
-    { expiresIn: 60 * 60 },
+    { expiresIn: 60 * 60 * 60},
     (err, token) => {
       if (err) {
         console.log(err);
