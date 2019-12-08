@@ -59,7 +59,7 @@ router.post("/login", (req, res, next) => {
 			} else if(result) {
 				console.log("hello\n===========================");
 				console.log(result);
-				jwt.encryption({ user: reqsult[0].empId }, (err, token) => {
+				jwt.encryption({ user: result.dataValues.empId }, (err, token) => {
 					console.log(token);
 					if (err) {
 						console.log(err);
