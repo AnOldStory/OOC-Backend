@@ -205,35 +205,36 @@ router.get("/", (req, res, next) => {
 	//console.log(req.query.token === '0')
 	//console.log(req.query.token === 0 && req.query.phone && req.query.email)
 	if (req.query.token === '0' && req.query.phone && req.query.email) {
-        console.log("nonmenber")
-	const serial = Math.floor(Math.random() * (1e8 - 1e7)) + 1e7;
-        signinDb. addCustomer(serial, "nm", "nm", "nm",
-                              "nm", "nm", req.query.phone,
+    console.log("nonmenber")
+	  const serial = Math.floor(Math.random() * (1e8 - 1e7)) + 1e7;
+    signinDb. addCustomer(serial, "nm", "nm", "nm",
+                              "nm", req.query.phone,
                               req.query.email, (err, result) => {
+      if (err) {
+        console.log(err);
+        next();
+      } else {
+        console.log(result)
+	      console.log("added customer")
+        const givenSeats = req.query.seats.split(",");
+        db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
+                              req.query.screen, givenSeats, serial,
+                              req.query.price, req.query.payment, req.query.event, (err, result) => {
           if (err) {
             console.log(err);
             next();
           } else {
-	    console.log("added customer")
-            const givenSeats = req.query.seats.split(",");
-            db.confirmTickets(req.query.cinema, req.query.showroom, req.query.movie,
-                              req.query.screen, givenSeats, serial,
-                              req.query.price, req.query.payment, req.query.event, (err, result) => {
-              if (err) {
-                console.log(err);
-                next();
-              } else {
-		result.serial = serial
-                console.log("hello\n=======================");
-                res.json(result);
-              } 
-            });
-          }
-        })
-      } else if (Object.keys(req.query.token).length > 16) {
-        console.log("were on")
-	jwt.decryption(req.query.token, (err, value) => {
-          if (err) {
+		        result.serial = serial
+            console.log("hello\n=======================");
+            res.json(result);
+          } 
+        });
+      }
+    })
+  } else if (Object.keys(req.query.token).length > 16) {
+      console.log("were on")
+	    jwt.decryption(req.query.token, (err, value) => {
+      if (err) {
             console.log(err);
             console.log("surprise3!");
             //next();

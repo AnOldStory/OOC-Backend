@@ -17,6 +17,7 @@ router.get("/", (req, res, next) => {
           console.log("surprise3!");
           next();
         } else {
+          console.log(value)
           console.log(value.user)
           loginDb.getUserbyId(value.user, (err, result) => {
             if (err) {

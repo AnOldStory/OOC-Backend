@@ -4,11 +4,11 @@ module.exports = function(sequelize, Datatypes) {
       type: Datatypes.STRING,
       allowNull: false
     },
-    count: {
+    goodsCount: {
       type: Datatypes.BIGINT,
       allowNull: false
     },
-    price: {
+    goodsPrice: {
       type: Datatypes.INTEGER,
       allowNull: false
     }
