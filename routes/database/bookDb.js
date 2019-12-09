@@ -256,7 +256,7 @@ exports.getTicketsTaken = (cinema, movie, date, time, callback) => {
             { cinemaId: cinema },
             { movieId: movie },
             { screeningDate: date },
-            { screeningTime: time }
+	    { screeningTime: time}
           ],
           screeningId: Sequelize.col('Ticket.screeningId')}
       }

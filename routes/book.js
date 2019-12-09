@@ -39,6 +39,28 @@ router.get("/", (req, res, next) => {
           res.json(result);
         }
       });
+    } else if (req.query.token) {
+      jwt.decryption(req.query.token, (err, value) => {
+	if (err) {
+	  console.log(err);
+	  console.log("surpluse yo");
+          next();
+	} else {
+          loginDb.getUserbyId(value.user, (err, result) => {
+	    if (err) {
+	      console.log(err);
+              next();
+            } else if (result[0]) {
+	      console.log(result);
+              console.log("hello\n============================");
+	      res.json(result)
+            } else {
+              console.log("search failed");
+              next();
+            }
+          });
+	}
+      });        
     } else {
       db.getSchedulesbyDate(req.query.date, (err, result) => {
         if (err) {

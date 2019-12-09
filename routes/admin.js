@@ -59,7 +59,7 @@ router.post("/login", (req, res, next) => {
 			} else if(result) {
 				console.log("hello\n===========================");
 				console.log(result);
-				jwt.encryption({ user: reqsult[0].empId }, (err, token) => {
+				jwt.encryption({ user: result.dataValues.empId }, (err, token) => {
 					console.log(token);
 					if (err) {
 						console.log(err);
@@ -446,14 +446,14 @@ router.post("/personel/signin", (res, req, err) => {
     console.log(e);
     next();
   }
-      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err) => {
+      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err, result) => {
           if (err) {
               console("err");
               console.log(err);
               next();
           } else {
               console.log("aloha\n================================");
-              res.json({result: "ok"});
+              res.json(result);
           }
       });
   }

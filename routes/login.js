@@ -79,12 +79,13 @@ router.post("/", (req, res, next) => {
 		}
 		db.getUserbyId(serial, (err, result) => {
 			console.log(result);
+			console.log(result[0]);
 			console.log("getuserbyid");
 			if (err) {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if (result) {
+			} else if (result[0]) {
 				console.log("hello\n===========================");
 				jwt.encryption({ user: serial }, (err, token) => {
 					console.log(token);

@@ -12,9 +12,13 @@ exports.addCustomer = (id, pw, name, rank, birth, phone, email, callback) => {
         customerPhone: phone,
         customerEmail: email
     })
-    .then(result => {
-        result = {"result" : "ok"};
-        return callback(null, result);
+    .then(() => {
+	console.log("at addCustomer");
+	//console.log(result)
+        const result = {"result" : "ok"};
+	console.log(result);
+        //resulto = "OKBODY"
+	return callback(null, result);
     })
     .catch(err => {
         console.log("error");

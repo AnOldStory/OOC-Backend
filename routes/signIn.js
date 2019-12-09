@@ -28,7 +28,7 @@ router.post("/", (res, req, err) => {
         console.log(info);
         console.log(Object.keys(info).length);
 		res.send(publicPem);
-	} else {
+    } else {
         console.log("at signin");
         console.log(info)
         var passwd = "";
@@ -37,16 +37,24 @@ router.post("/", (res, req, err) => {
 		} catch (e) {
 			console.log(e);
 			next();
-        }
+        	}
         //(passwd, info.name, 1, "12/2", info.phone, info.mail,
-        db.addCustomer(info.id, passwd, info.name, 1, "12/2", info.phone, info.mail, (err) => {
+        db.addCustomer(info.id, passwd, info.name, 1, "12/2", info.phone, info.mail, (err, result) => {
             if (err) {
                 console("err");
                 console.log(err);
                 next();
             } else {
+		//console.log(result);
+		//console.log(typeof result);
                 console.log("aloha\n================================");
-                res.json({result: "ok"});
+                //console.log(Object.keys(res));
+		//console.log(Object.keys(res.res));
+		//console.log(Object.keys(res.body));
+		//console.log(Object.keys(res.method));
+		//next();
+		res.res.json(result);
+		//res.send(result);
             }
         });
     }
