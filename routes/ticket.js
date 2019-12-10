@@ -59,13 +59,28 @@ router.get("/", (req, res, next) => {
               next();
             } else if (result[0]) {
               const givenTickets = req.query.tickets.split(",");
-                ticketDb.deleteTickets(givenTickets, (err, result) => {
+                ticketDb.deleteTickets( givenTickets, (err, result) => {
                   if (err) {
                     next();
+                  } else if (result.result === "OK") {
+		    ticketDb.getTicketById(value.user, (err, result1) => {
+		      if (err) {
+			console.log(err);
+			next();
+		      } else if (result1[0]) {
+			console.log(Object.keys(result1));
+		        console.log("hello\n===========================");
+		        res.json(result1);
+		      } else {
+		        console.log("no more tickets");
+			next();
+		      }
+		    });
+                    //console.log("hello\n======================================");
+                    //res.json(result);
                   } else {
-                    console.log("hello\n======================================");
-                    res.json(result);
-                  }
+		    next();
+		  }
                 })
             } else {
               console.log("search failed");
