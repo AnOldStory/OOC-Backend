@@ -44,13 +44,18 @@ router.post("/", (req, res, next) => {
 			next();
 		}
 		db.getUserbyIdPW(info.id, passwd, (err, result) => {
-			console.log(result);
+			//console.log(result);
+			//console.log(result[0]);
+			//console.log(Object.keys(result));
+			//console.log(Object.keys(result[0]));
 			console.log("getuserbyid");
 			if (err) {
 				console.log(err);
 				console.log("can2");
 				next();
 			} else if(result) {
+				console.log(Object.keys(result));
+				console.log(result[0]);
 				console.log("hello\n===========================");
 				jwt.encryption({ user: info.id }, (err, token) => {
 					console.log(token);
@@ -79,12 +84,13 @@ router.post("/", (req, res, next) => {
 		}
 		db.getUserbyId(serial, (err, result) => {
 			console.log(result);
+			console.log(result[0]);
 			console.log("getuserbyid");
 			if (err) {
 				console.log(err);
 				console.log("can2");
 				next();
-			} else if (result) {
+			} else if (result[0]) {
 				console.log("hello\n===========================");
 				jwt.encryption({ user: serial }, (err, token) => {
 					console.log(token);

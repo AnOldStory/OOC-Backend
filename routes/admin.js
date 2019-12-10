@@ -446,14 +446,14 @@ router.post("/personel/signin", (res, req, err) => {
     console.log(e);
     next();
   }
-      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err) => {
+      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err, result) => {
           if (err) {
               console("err");
               console.log(err);
               next();
           } else {
               console.log("aloha\n================================");
-              res.json({result: "ok"});
+              res.json(result);
           }
       });
   }

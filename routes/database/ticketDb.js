@@ -59,6 +59,41 @@ exports.deleteTickets = (tickets, callback) => {
     console.log(ticket)
     console.log(index)
     if (Object(tickets).length === index+1) {
+    //  Models.Ticket.findAll({
+      // subQuery: false,
+    //  where: {
+    //    [Op.and]: [{ customerId: id }]
+    //  },
+    //  required: true,
+    //  include: [
+    //    {
+    //      model: Models.Schedule,
+    //      as: "screeningIdTicket",
+    //      required: true,
+    //      where: {
+    //        screeningId: Sequelize.col('Ticket.screeningId')
+    //      },
+    //      include: [
+    //        {
+    //          model: Models.Movie,
+    //          as: "movieIdSchedule",
+    //          // where: {
+    //          //   movieId: Sequelize.col('Schedule.movieId')
+    //          // }
+    //        }
+    //      ]
+    //    }
+    //  ]
+    //})
+    //.then(result => {
+    //  console.log("deleted and getting tickets...");
+    //  console.log(result);
+    //  return callback(null, result);
+    //})
+    //.catch(err => {
+    //  console.log(err);
+    //  return callback(err, false);
+    //})
       const res = {"result": "OK"}
       console.log("tickets deleted...");
       return callback(null, res);
