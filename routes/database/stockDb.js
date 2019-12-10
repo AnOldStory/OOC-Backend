@@ -3,7 +3,18 @@ var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
 exports.getGoods = callback => {
-    Models.Goods.findAll()
+    Models.Goods.findAll({
+      include: [
+        {
+          model: Models.Cinema,
+          as: "cineGoodsId",
+          required: true,
+          where: {
+            cinemaId: Sequelize.col('Goods.cinemaId')
+          }
+        }
+      ]
+    })
     .then(result => { 
         console.log("getting goods....");
         return callback(null, result);

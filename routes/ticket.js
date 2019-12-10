@@ -3,6 +3,7 @@ var router = express.Router();
 // const db = require("./database");
 const loginDb = require("./database/loginDb");
 const ticketDb = require("./database/ticketDb");
+const signinDb = require("./database/signInDb");
 const jwt = require("../utils/jwt");
 
 
@@ -63,24 +64,32 @@ router.get("/", (req, res, next) => {
                   if (err) {
                     next();
                   } else if (result.result === "OK") {
-		    ticketDb.getTicketById(value.user, (err, result1) => {
-		      if (err) {
-			console.log(err);
-			next();
-		      } else if (result1[0]) {
-			console.log(Object.keys(result1));
-		        console.log("hello\n===========================");
-		        res.json(result1);
-		      } else {
-		        console.log("no more tickets");
-			next();
-		      }
-		    });
+		                ticketDb.getTicketById(value.user, (err, result1) => {
+		                  if (err) {
+			                  console.log(err);
+			                  next();
+                      } else if (result1[0]) {
+                        console.log(Object.keys(result1));
+                        console.log("hello\n===========================");
+                        res.json(result1);
+                      } else {
+                        console.log("no more tickets");
+                        signinDb.deleteCustomer(values.user, (err, result) => {
+                          if (err) {
+                            next();
+                          } else {
+                            result = {"result": "OK"}
+                            res.json(result);
+                          }
+                        })
+                        next();
+                      }
+                    });
                     //console.log("hello\n======================================");
                     //res.json(result);
                   } else {
-		    next();
-		  }
+                    next();
+                  }
                 })
             } else {
               console.log("search failed");

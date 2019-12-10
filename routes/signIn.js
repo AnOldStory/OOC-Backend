@@ -41,9 +41,22 @@ router.post("/", (res, req, err) => {
         //(passwd, info.name, 1, "12/2", info.phone, info.mail,
         db.addCustomer(info.id, passwd, info.name, 1, "12/2", info.phone, info.mail, (err, result) => {
             if (err) {
-                console("err");
-                console.log(err);
-                next();
+                if (err.name === "SequelizeUniqueConstraintError") {
+                    console.log("duplication");
+                    const result = {"result": "duplication error"};
+                    console.log(result);
+                    // res.json(err);
+                    res.res.status(409).json(result);
+                    // next();
+                } else {
+                    next();
+                }
+                // console("err");
+                // console.log(err);
+                // console.log("analysis : ");
+                // console.log(Object.keys(err));
+                // console.log(err[0])
+                // next();
             } else {
 		//console.log(result);
 		//console.log(typeof result);

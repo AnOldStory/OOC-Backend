@@ -2,6 +2,23 @@ var Models = require("../../models");
 var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
+exports.deleteCustomer = (id, callback) => {
+    Models.Customer.destory({
+        where: {
+            [Op.and]: [{customerId: id}]
+          }
+    })
+    .then(result => {
+        console.log("deleting customers...");
+        return callback(null, result);
+    })
+    .catch(err => {
+      console.log("error");
+      console.log(err);
+      return callback(err, false);
+    });
+};
+
 exports.addCustomer = (id, pw, name, rank, birth, phone, email, callback) => {
     Models.Customer.create({
         customerId: id,
@@ -22,7 +39,10 @@ exports.addCustomer = (id, pw, name, rank, birth, phone, email, callback) => {
     })
     .catch(err => {
         console.log("error");
-        console.log(err);
+        console.log(Object.keys(err));
+        console.log(err.name);
+        console.log(err.errors);
+        // console.log(err);
         return callback(err, false);
     });
 };

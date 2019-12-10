@@ -3,16 +3,37 @@ var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
 exports.getTickets = (callback) => {
-    Models.Ticket.findAll()
-        .then(result => {
-          console.log("getting all tickets...");
-          return callback(null, result);
-        })
-        .catch(err => {
-          console.log("error");
-          console.log(err);
-          return callback(err, false);
-        });
+  Models.Ticket.findAll({
+    // required: true,
+    include: [
+      {
+        model: Models.Schedule,
+        as: "screeningIdTicket",
+        required: true,
+        where: {
+          screeningId: Sequelize.col('Ticket.screeningId')
+        },
+        include: [
+          {
+            model: Models.Movie,
+            as: "movieIdSchedule",
+            // where: {
+            //   movieId: Sequelize.col('Schedule.movieId')
+            // }
+          }
+        ]
+      }
+    ]
+  })
+  .then(result => {
+    console.log("getting all tickets...");
+    return callback(null, result);
+  })
+  .catch(err => {
+    console.log("error");
+    console.log(err);
+    return callback(err, false);
+  });
 }
 
 exports.getTicketById = (id, callback) => {
