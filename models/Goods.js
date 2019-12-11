@@ -20,7 +20,7 @@ module.exports = function(sequelize, Datatypes) {
         name: "cinemaId",
         allowNull: false
       },
-      as: "cineIdGoods"
+      as: "cineGoodsId"
     });
     Goods.hasMany(models.Sell, {
       foreignKey: {
