@@ -64,26 +64,34 @@ router.get("/", (req, res, next) => {
                   if (err) {
                     next();
                   } else if (result.result === "OK") {
-		                ticketDb.getTicketById(value.user, (err, result1) => {
-		                  if (err) {
-			                  console.log(err);
-			                  next();
+		    ticketDb.getTicketById(value.user, (err, result1) => {
+		      if (err) {
+			console.log(err);
+			next();
                       } else if (result1[0]) {
                         console.log(Object.keys(result1));
                         console.log("hello\n===========================");
                         res.json(result1);
                       } else {
                         console.log("no more tickets");
-                        signinDb.deleteCustomer(values.user, (err, result) => {
-                          if (err) {
-                            next();
-                          } else {
-                            result = {"result": "OK"}
-                            res.json(result);
-                          }
-                        })
-                        next();
-                      }
+			console.log(value.user);
+			//console.log(typeof parseInt)
+			if(!isNaN(parseInt(value.user))){
+                          signinDb.deleteCustomer(value.user, (err, result) => {
+                            if (err) {
+                              next();
+                            } else {
+                             result = {"result": "OK"}
+			     result.member = false
+                             res.json(result);
+                            }
+                          })
+                        } else {
+			  result = {"result" : "OK"}
+			  result.member = true
+			  res.json(result);
+			}
+		      }
                     });
                     //console.log("hello\n======================================");
                     //res.json(result);

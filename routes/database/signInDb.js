@@ -3,7 +3,7 @@ var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
 exports.deleteCustomer = (id, callback) => {
-    Models.Customer.destory({
+    Models.Customer.destroy({
         where: {
             [Op.and]: [{customerId: id}]
           }
