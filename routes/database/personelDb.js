@@ -3,7 +3,18 @@ var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
 exports.getWorkers = callback => {
-  Models.Worker.findAll()
+  Models.Worker.findAll({
+      include: [
+        {
+          model: Models.Cinema,
+          as: "cineWorkerId",
+          required: true,
+          where: {
+            cinemaId: Sequelize.col('Worker.cinemaId')
+          }
+        }
+      ]
+    })
     .then(result => {
       console.log("getting schedules...");
       return callback(null, result);

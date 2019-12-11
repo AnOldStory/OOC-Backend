@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const fs = require("fs");
 
 /* Json Web Token */
 var jwt = require("../utils/jwt");
@@ -9,13 +10,18 @@ var jwt = require("../utils/jwt");
 
 /* Main page */
 router.get("/", (req, res, next) => {
-  console.log("surprise10!");
-  if (validation) {
-  } else {
+  //const html = fs.readFileSync("../public/warn.html", "utf-8");
+  //res.render("warn", {html: html});
+
+  res.status(404).sendFile("../public/warn.html");
+
+  //console.log("surprise10!");
+  //if (validation) {
+  //} else {
     /* TODO : Parameter Error Handleing */
-    console.log("surprise!");
+  //  console.log("surprise!");
     //next();
-  }
+  //}
 });
 
 router.get("/token/enc", (req, res, next) => {

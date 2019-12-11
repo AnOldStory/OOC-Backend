@@ -299,7 +299,8 @@ router.get("/stock", (req, res, next) => {
       });
     }
   } else {
-
+    const result = {"result": "eror"}
+    res.json(result);
   }
   
 });
@@ -446,14 +447,14 @@ router.post("/personel/signin", (res, req, err) => {
     console.log(e);
     next();
   }
-      signinDb.addWorker(passwd, info.name, info.sal, info.pos, (err, result) => {
+      signinDb.addWorker(passwd, info.name, info.sal, info.pos, info.cinema, (err, result) => {
           if (err) {
               console("err");
               console.log(err);
               next();
           } else {
               console.log("aloha\n================================");
-              res.json(result);
+              res.res.json(result);
           }
       });
   }

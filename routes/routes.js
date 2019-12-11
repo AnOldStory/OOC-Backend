@@ -11,11 +11,11 @@ const ticketRouter = require("./ticket");
 /* router  */
 module.exports = function(app) {
   app.use("/", indexRouter);
-  app.use("/book", bookRouter);
-  app.use("/login", loginRouter);
-  app.use("/admin", adminRouter);
-  app.use("/signin", signInRouter);
-  app.use("/ticket", ticketRouter);
+  app.use("/api/book", bookRouter);
+  app.use("/api/login", loginRouter);
+  app.use("/api/admin", adminRouter);
+  app.use("/api/signin", signInRouter);
+  app.use("/api/ticket", ticketRouter);
   //app.use("/users", usersRouter);
 
   // error handler

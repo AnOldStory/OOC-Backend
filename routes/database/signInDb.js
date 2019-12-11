@@ -47,13 +47,13 @@ exports.addCustomer = (id, pw, name, rank, birth, phone, email, callback) => {
     });
 };
 
-exports.addWorker = (pw, name, sal, pos, callback) => {
+exports.addWorker = (pw, name, sal, pos, cinema, callback) => {
     Models.Worker.create({
         empPW: pw,
         empName: name,
         empSalary: sal,
         empPosition: pos,
-	cinemaId: 1,
+	cinemaId: cinema,
 	depId: 1
     })
     .then(result => { 
