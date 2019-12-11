@@ -5,6 +5,8 @@ const db = require("./database/bookDb");
 const loginDb = require("./database/loginDb");
 const signinDb = require("./database/signInDb");
 const jwt = require("../utils/jwt");
+const nodemailer = require("nodemailer");
+var mailOptions;
 
 router.get("/", (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
@@ -246,7 +248,32 @@ router.get("/", (req, res, next) => {
             console.log(err);
             next();
           } else {
-		        result.serial = serial
+	    //const transporter = nodemailer.createTransporter({
+	    //  service: 'gmail',
+	    //  auth: {
+		//user: 'databasetest357@gmail.com',
+		//pass: '1z2x3c4v5b!'
+             // }
+	    //})
+	    //.then(
+	    //  mailOptions = {
+	    //  "from": 'databasetest357@gmail.com',
+	    //  "to": req.query.email,
+	    //  "subject": 'serial: '+serial,
+	    //  "test": 'this is ur serial boi: ' + serial
+	    //  };
+	    //  transporter.sendMail(mailOptions, (err, unfo) => {
+	    //    if (error) {
+//		  console.log("error in sending email");
+//	          console.log(error);
+//	        } else {
+//	          result.serial = serial;
+//		  console.log("helo\n==============");
+//		  res.json(result);
+//	        }
+//	      })
+//	    )
+	    result.serial = serial
             console.log("hello\n=======================");
             res.json(result);
           } 

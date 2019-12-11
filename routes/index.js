@@ -13,14 +13,15 @@ router.get("/", (req, res, next) => {
   //const html = fs.readFileSync("../public/warn.html", "utf-8");
   //res.render("warn", {html: html});
 
-  res.status(404).sendFile("../public/warn.html");
+  console.log("in root");
 
   //console.log("surprise10!");
   //if (validation) {
   //} else {
     /* TODO : Parameter Error Handleing */
   //  console.log("surprise!");
-    //next();
+    
+    next();
   //}
 });
 
@@ -52,5 +53,10 @@ router.get("/token/dec", (req, res, next) => {
     }
   });
 });
+
+//router.get(["/*", "/"], (err, req, res, next) => {
+//  console.log("in root");
+//  res.sendFile("../public/warn.html");
+//});
 
 module.exports = router;

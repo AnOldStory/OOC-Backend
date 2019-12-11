@@ -16,17 +16,20 @@ module.exports = function(app) {
   app.use("/api/admin", adminRouter);
   app.use("/api/signin", signInRouter);
   app.use("/api/ticket", ticketRouter);
-  //app.use("/users", usersRouter);
+  //app.use("*", (err, req, res, next) => {
+  //  res.sendFile("../public/warn.html");
+  //});
 
   // error handler
-  app.use(function(err, req, res, next) {
+  app.use( function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
     console.log("FaDe");
     console.log(err)
     // render the error page
-    res.status(err.status || 500);
-    res.json(err);
+    
+    //res.status(err.status || 500);
+    res.sendFile("../public/warn.html");
   });
 };
