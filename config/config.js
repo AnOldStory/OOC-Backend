@@ -1,10 +1,14 @@
 module.exports = {
   DATABASE: {
-    host: "ooc-191017.cwfdsu9jvod1.ap-northeast-2.rds.amazonaws.com",
-    port: "3306", //"3306",
-    user: "admin",
-    password: "cinema1234",
-    database: "cinema"
+    host: "220.94.42.246",
+    port: "5432",
+    user: "skydb",
+    password: "dbsky",
+    database: "cinema",
+    dialect: "postgres",
+    timezone: "+09:00",
   },
-  SESSION_SECRET: "ThisIsMySecret"
+  "DATABASE_URL": process.env.DATABASE_URL ||"write down",
+  "SESSION_SECRET":"amollang",
+  "API_PORT": 7001,
 };

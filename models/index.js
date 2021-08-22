@@ -9,7 +9,7 @@ var sequelize = new Sequelize(
   config.DATABASE.password,
   {
     host: config.DATABASE.host,
-    dialect: "mysql"
+    dialect: "postgres"
   }
 );
 var db = {};

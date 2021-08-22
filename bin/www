@@ -7,13 +7,14 @@
 var app = require("../app");
 var debug = require("debug")("ooc-backend:server");
 var http = require("http");
+var config = require("../config/config");
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "80");
-app.set("port", port);
+var port = normalizePort(process.env.PORT || config.API_PORT);
+app.set('port', port);
 
 /**
  * Create HTTP server.
